@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "error.h"
+#include "graph.c"
 
 int main( int argc, char *argv[] ) {
     int opt;

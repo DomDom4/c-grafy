@@ -1,32 +1,20 @@
-#include "queue.h"
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
 
-q_t initQueue( int value ) {
-    q_t q = malloc( sizeof q );
-    q->next = NULL;
-    q->val = value;
-    return q;
-}
+#include <stdlib.h>
+#include <stdio.h>
 
-void addToQueue( q_t q, int value ) { //q - glowa kolejki
-    if( q == NULL ) {
-	printf( "Kolejka nie istnieje\n" );
-	return;
-    }
-    q_t new = malloc( sizeof new );
-    new->val = value;
-    new->next = NULL;
-    while( q->next != NULL )
-	q = q->next;
-    q->next = new;
-}
+typedef struct q {
+    int val;
+    struct q *next;
+} *q_t;
 
-int popFromQueue( q_t *q ) {
-    if( *q == NULL ) {
-	printf( "Kolejka pusta\n" );
-	return -1;
-    }
-    int show = (*q)->val;
-    *q = (*q)->next;
-    return show;
-}
+q_t initQueue( int value );
 
+void addToQueue( q_t q, int value );
+
+int popFromQueue( q_t *q );
+
+void freeQueue( q_t q );
+
+#endif

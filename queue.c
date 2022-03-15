@@ -30,3 +30,12 @@ int popFromQueue( q_t *q ) {
     return show;
 }
 
+void freeQueue( q_t q ) {
+    q_t temp;
+    while( q != NULL ) {
+	temp = q;
+	q = q->next;
+	free( temp );
+    }
+}
+

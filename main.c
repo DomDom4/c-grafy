@@ -36,49 +36,49 @@ int main( int argc, char *argv[] ) {
 	    case 'o':
 		out = fopen( optarg, "w" );
 		if( out == NULL ) {
-		    printf( "Nie udalo sie otworzyc pliku wyjsciowego\n" );
-		    return 1;
+		    printf( "INPUT_ERR: %s\n", optarg );
+		    return 3;
 		}
 		break;
 	    case 'i':
 		in = fopen( optarg, "r" );
 		if( in == NULL ) {
-		    printf( "Nie udalo sie otworzyc pliku wejsciowego\n");
-		    return 1;
+		    printf( "INPUT_ERR: %s\n", optarg );
+		    return 3;
 		}
 		break;
 	    case '?':
-		printf( "Bledna opcja: %c\n", optopt );
+		printf( "UNKNOWN_FALG: %c\n", optopt );
 		instructionMsg( argv[0] );
-		return 1;
+		return 2;
 		break;
 	    case ':':
-		printf( "Brak argumentu dla opcji: %c\n", optopt );
+		printf( "NO_ARG: %c\n", optopt );
 		instructionMsg( argv[0] );
-		return 1;
+		return 8;
 		break;
 	    case 1:
-		printf( "Argument bez opcji: %s\n", optarg );
+		printf( "AMBIGUOUS_OUT: %s\n", optarg );
 		instructionMsg( argv[0] );
-		return 1;
+		return 7;
 		break;
 	}
     }
 
     if( (in == NULL && out == NULL) || (in != NULL && out != NULL) ) { //sprawdzenie czy zostal wybrany sposob generowania grafu
-	printf( "Nalezy podac plik wejsciowy lub wyjsciowy!\n" );
+	printf( "INCORRECT_NUMBER_OF_ARGS\n" );
 	instructionMsg( argv[0] );
 	return 1;
     }
 
-    if( szer < 0 || dlug < 0 || dolny < 0 || gorny < 0 || dolny > gorny ) { //sprawdzenie poprawnosci podanych danych
-	printf( "Nieprawidlowa wartosc argumentu - liczba ujemna \n");
-	return 1;
+    if( szer < 0 || dlug < 0 || dolny < 0 || gorny < 0 ) { //sprawdzenie poprawnosci podanych danych
+	printf( "NOT_POSITIVE_NB \n");
+	return 5;
     }
 
     if( z < 0 || d < 0 || z >= szer*dlug || d >= szer*dlug ) { //sprawdzenie poprawnosci podanych wezlow
-	printf( "Podany wezel nie nalezy do grafu!\n" );
-	return 1;
+	printf( "NO_PATH!\n" );
+	return 10;
     }
 
     if( in == NULL ) {

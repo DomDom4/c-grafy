@@ -3,6 +3,6 @@
 #include <stdio.h>
 
 void instructionMsg( char* progName ) {
-    printf( "Prawidlowe uzycie programu:\n%s -z od_wezla -d do_wezla [-i plik_wejsciowy][[-x szerokosc][-y dlugosc][-a dolny_zakres][-b gorny_zakres][-n ilosc_grafow] -o plik_wyjsciowy] \n\t od - od ktorego wierzcholka szukamy drogi\n\t do - do ktorego wierzcholka szukamy drogi\n", progName );
+    printf( "Usage:\n%s -f from_node -t to_node [-i input_file][[-x width][-y length][-a bottom_range][-b upper_range][-n nb_of_graphs] -o output_file] \n\t from_node - where the path begins\n\t to_node - where the path ends\n", progName );
 }
 

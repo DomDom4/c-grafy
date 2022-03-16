@@ -7,16 +7,16 @@
 
 int main( int argc, char *argv[] ) {
     int opt;
-    int szer = 10, dlug = 10, ilosc = 1, z, d;	//
+    int szer = 10, dlug = 10, ilosc = 1, f, t;	//
     double dolny = 0, gorny = 10;		//domyslne wartosci
     FILE *in = NULL, *out = NULL;
-    while(( opt = getopt( argc, argv, "-:z:d:x:y:a:b:n:o:i:" )) != -1 ) { //wczytane opcji
+    while(( opt = getopt( argc, argv, "-:f:t:x:y:a:b:n:o:i:" )) != -1 ) { //wczytane opcji
 	switch( opt ) {
-	    case 'z':
-		z = atoi( optarg );
+	    case 'f':
+		f = atoi( optarg );
 		break;
-	    case 'd':
-		d = atoi( optarg );
+	    case 't':
+		t = atoi( optarg );
 		break;
 	    case 'x':
 		szer = atoi( optarg );
@@ -76,7 +76,7 @@ int main( int argc, char *argv[] ) {
 	return 5;
     }
 
-    if( z < 0 || d < 0 || z >= szer*dlug || d >= szer*dlug ) { //sprawdzenie poprawnosci podanych wezlow
+    if( f < 0 || t < 0 || f >= szer*dlug || t >= szer*dlug ) { //sprawdzenie poprawnosci podanych wezlow
 	printf( "NO_PATH!\n" );
 	return 10;
     }

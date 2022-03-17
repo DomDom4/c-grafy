@@ -1,10 +1,15 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+#include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
+
 typedef struct node {
     int id; //numer wezla
-    struct **node; //tablica polaczen
+    struct node **conn; //tablica polaczen
     double *val; //tablica wag przejsc, indeksy koreluja z **node.
+    int ways; //ile polaczen ma dany wezel
 } *node_t;
 
 node_t genFromParams( int x, int y, double a, double b ); //Generowanie grafu - szerokosc, wysokos, dolna waga, gorna waga

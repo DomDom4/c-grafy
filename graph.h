@@ -20,6 +20,8 @@ void printToFile( node_t graph ); //Zapisanie do pliku
 
 void divideGraph( node_t *graph ); //Rozdzielanie na graf niespojny
 
+void freeGraph( node_t graph );
+
 int checkIntegrity( node_t graph ); //BFS
 
 void findPath( node_t graph ); //Dijsktra

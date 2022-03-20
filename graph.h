@@ -16,7 +16,7 @@ node_t genFromParams( int x, int y, double a, double b ); //Generowanie grafu - 
 
 node_t readFromFile( FILE *in ); //Czytanie z pliku
 
-void printToFile( node_t graph ); //Zapisanie do pliku
+void printToFile( node_t graph, int width, int len, FILE *out ); //Zapisanie do pliku
 
 void divideGraph( node_t *graph ); //Rozdzielanie na graf niespojny
 

@@ -108,7 +108,42 @@ node_t genFromParams( int width, int len, double a, double b ) {
 
 node_t readFromFile( FILE *in );
 
-void printToFile( node_t graph );
+void printToFile( node_t graph, int width, int len, FILE *out ) {
+    int i, j, nodown, noright, down, right;
+    node_t temp;
+    fprintf( out, "%d %d\n", width, len );
+    while( 1 ) {
+	nodown = 1;
+	down = graph->id + width;
+	temp = graph;
+	for( i= 0; i < graph->ways; i++ ) { //sprawdzenie czy jestesmy w ostatnim rzedzie
+	    if( graph->conn[i]->id == down ) {
+		nodown = 0;
+		break;
+	    }
+	}
+	while( 1 ) {
+	    noright = 1;
+	    right = temp->id + 1;
+	    fprintf( out, "%d:\t", temp->id ); //wypisanie obecnego wezla
+	    for( j= 0; j < temp->ways; j++ ) //wypisanie polaczen obecnego wezla
+		fprintf( out, "%d: %g ", temp->conn[j]->id, temp->val[j] );
+	    fprintf( out, "\n" );
+	    for( j= 0; j < temp->ways; j++ ) //sprawdzenie czy ostatnia kolumna
+		if( temp->conn[j]->id == right ) {
+		    noright = 0;
+		    break;
+		}
+	    if( noright ) //jezeli ostatnia kolumna to caly rzad wypisany
+		break;
+	    temp = temp->conn[j]; //jezeli nie to przejdz w prawo i kontynuuj
+	}
+	if( nodown ) //jezeli ostatni rzad to wszystko juz wypisane - przerwij
+	    break;
+	graph = graph->conn[i]; //jezeli nie to przejdz w dol i kontynuuj
+	
+    }
+}
 
 void divideGraph( node_t *graph );
 

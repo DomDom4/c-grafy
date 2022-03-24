@@ -12,20 +12,24 @@ node_t makeNode( int width, int len, int current ) { //funkcja pomocnicza do fun
     //nadanie wlasnosci wezlowi
     nd->id = current;
     if( current == 0 || current == width*len-1 || current == width-1 || current == width*len-width ) { //rog
-	ways = 2;
-	nd->conn = malloc( ways * sizeof nd );
-	nd->val = malloc( ways * sizeof nd->val );
+	if( width == 1 || len == 1 ) 
+	    ways = 1;
+	else
+	    ways = 2;
     }
     else if( (current > 0 && current < width-1) || (current > width*len-width && current < width*len-1) || current % width == 0 || current % width == width-1 ) { //krawedz
-	ways = 3;
-	nd->conn = malloc( ways * sizeof nd );
-	nd->val = malloc( ways * sizeof nd->val );
+	if( width == 1 || len == 1 )
+	    ways = 2;
+	else
+	    ways = 3;
     }
     else { //srodek
 	ways = 4;
 	nd->conn = malloc( ways * sizeof nd );
 	nd->val = malloc( ways * sizeof nd->val );
     }
+    nd->conn = malloc( ways * sizeof nd );
+    nd->val = malloc( ways * sizeof nd->val );
     nd->ways = ways;
     if( nd->conn == NULL || nd->val == NULL ) {
 	printf( "NOT_ENOUGH_MEM\n" );
@@ -109,6 +113,8 @@ node_t genFromParams( int width, int len, double a, double b ) {
 node_t readFromFile( FILE *in );
 
 void printToFile( node_t graph, int width, int len, FILE *out ) {
+    if( width == 1 && len == 1 )
+	return;
     int i, j, nodown, noright, down, right;
     node_t temp;
     fprintf( out, "%d %d\n", width, len );
@@ -134,7 +140,7 @@ void printToFile( node_t graph, int width, int len, FILE *out ) {
 		    noright = 0;
 		    break;
 		}
-	    if( noright ) //jezeli ostatnia kolumna to caly rzad wypisany
+	    if( noright || right == down ) //jezeli ostatnia kolumna to caly rzad wypisany
 		break;
 	    temp = temp->conn[j]; //jezeli nie to przejdz w prawo i kontynuuj
 	}

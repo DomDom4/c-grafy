@@ -15,6 +15,8 @@ void addToQueue( q_t q, int value );
 
 int popFromQueue( q_t *q );
 
+int inQueue( q_t q, int value );
+
 void freeQueue( q_t q );
 
 #endif

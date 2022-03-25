@@ -2,7 +2,7 @@
 #include "queue.h"
 
 int checkIntegrity( graph_t graph ) { //BFS
-    q_t working, checked = NULL;
+    q_t temp, working, checked = NULL;
     node_t head = graph.head;
     working = initQueue( head->id );
     int i, count = 0, nodes = graph.width*graph.len;
@@ -21,11 +21,12 @@ int checkIntegrity( graph_t graph ) { //BFS
 		    break;
 		}
     }
+    temp = checked;
     while( checked != NULL ) {
 	count++;
 	checked = checked->next;
     }
-    freeQueue( checked );
+    freeQueue( temp );
     if( count == nodes )
 	return 1;
     return 0;

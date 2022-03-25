@@ -3,13 +3,14 @@
 #include <stdlib.h>
 
 #include "error.h"
-#include "graph.c"
+#include "graph.h"
 
 int main( int argc, char *argv[] ) {
     int opt;
-    int szer = 10, dlug = 10, ilosc = 1, f, t;	//
-    double dolny = 0, gorny = 10;		//domyslne wartosci
+    int width = 10, len = 10, nof = 1, f, t;	//
+    double down = 0, up = 10;		//domyslne wartosci
     FILE *in = NULL, *out = NULL;
+    graph_t graph;
     while(( opt = getopt( argc, argv, "-:f:t:x:y:a:b:n:o:i:" )) != -1 ) { //wczytane opcji
 	switch( opt ) {
 	    case 'f':
@@ -19,19 +20,19 @@ int main( int argc, char *argv[] ) {
 		t = atoi( optarg );
 		break;
 	    case 'x':
-		szer = atoi( optarg );
+		width = atoi( optarg );
 		break;
 	    case 'y':
-		dlug = atoi( optarg );
+		len = atoi( optarg );
 		break;
 	    case 'a':
-		dolny = atoi( optarg );
+		down = atoi( optarg );
 		break;
 	    case 'b':
-		gorny = atoi( optarg );
+		up = atoi( optarg );
 		break;
 	    case 'n':
-		ilosc = atoi( optarg );
+		nof = atoi( optarg );
 		break;
 	    case 'o':
 		out = fopen( optarg, "w" );
@@ -71,30 +72,24 @@ int main( int argc, char *argv[] ) {
 	return 1;
     }
 
-    if( szer < 0 || dlug < 0 || dolny < 0 || gorny < 0 ) { //sprawdzenie poprawnosci podanych danych
+    if( width < 0 || len < 0 || down < 0 || up < 0 ) { //sprawdzenie poprawnosci podanych danych
 	printf( "NOT_POSITIVE_NB \n");
 	return 5;
     }
 
-    if( f < 0 || t < 0 || f >= szer*dlug || t >= szer*dlug ) { //sprawdzenie poprawnosci podanych wezlow
+    if( f < 0 || t < 0 || f >= width*len || t >= width*len ) { //sprawdzenie poprawnosci podanych wezlow
 	printf( "NO_PATH!\n" );
 	return 10;
     }
 
     if( in == NULL ) {
-	//generuj graf
-	//zapisz go do pliku
-	//sprawdz czy spojny
-	//znajdz droge
-	;
+	graph = genFromParams( width, len, down, up );
+	printToFile( graph, out );
     }
     if( out == NULL ) {
 	//wczytaj graf z pliku
-	//spradz czy spojny
-	//znajdz droge
 	;
     }
-
-    
-
+	checkIntegrity( graph );
+	//znajdz droge
 }

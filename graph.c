@@ -1,17 +1,13 @@
 #include "graph.h"
 
 node_t makeNode( int width, int len, int current ) { //funkcja pomocnicza do funkcji generujacej
-    node_t nd = malloc( sizeof nd );
+    node_t nd;
     int ways;
-
-    if( nd == NULL ) {
-	printf( "NOT_ENOUGH_MEM\n" );
-	exit( 11 );
-    }
-
+    
     //nadanie wlasnosci wezlowi
-    nd->id = current;
-    if( current == 0 || current == width*len-1 || current == width-1 || current == width*len-width ) { //rog
+    if( width == 1 && len == 1 )
+	ways = 0;
+    else if( current == 0 || current == width*len-1 || current == width-1 || current == width*len-width ) { //rog
 	if( width == 1 || len == 1 ) 
 	    ways = 1;
 	else
@@ -25,24 +21,25 @@ node_t makeNode( int width, int len, int current ) { //funkcja pomocnicza do fun
     }
     else { //srodek
 	ways = 4;
-	nd->conn = malloc( ways * sizeof nd );
-	nd->val = malloc( ways * sizeof nd->val );
     }
-    nd->conn = malloc( ways * sizeof nd );
+    nd = malloc( sizeof nd + ways * sizeof nd->val + ways * sizeof nd->conn );
+    nd->conn = malloc( ways * sizeof nd->conn );
     nd->val = malloc( ways * sizeof nd->val );
     nd->ways = ways;
-    if( nd->conn == NULL || nd->val == NULL ) {
+    nd->id = current;
+    if( nd->conn == NULL || nd->val == NULL || nd == NULL ) {
 	printf( "NOT_ENOUGH_MEM\n" );
 	exit( 11 );
     }
     return nd;
 }
 
-node_t genFromParams( int width, int len, double a, double b ) { 
+graph_t genFromParams( int width, int len, double a, double b ) { 
     srand( time ( NULL ));
     int i, high, low, last = width * len -1;
-    node_t head, *nodes = malloc( last * sizeof nodes ); //tymczasowe przechowywanie adresow wezlow
-    int *conns = malloc( last * sizeof conns ); //stan istniejacych polaczen dla kazdego wezla
+    node_t head, *nodes = malloc( (last+1) * sizeof nodes ); //tymczasowe przechowywanie adresow wezlow
+    graph_t graph;
+    int *conns = malloc( (last+1) * sizeof conns ); //stan istniejacych polaczen dla kazdego wezla
     
     if( conns == NULL || nodes == NULL ) {
 	printf( "NOT_ENOUGH_MEM\n" );
@@ -104,26 +101,28 @@ node_t genFromParams( int width, int len, double a, double b ) {
 	}
 	
     }
-
+    graph.width = width;
+    graph.len = len;
+    graph.head = head;
     free( nodes );
-    //free( conns );
-    return head;
+    free( conns );
+    return graph;
 }
 
-node_t readFromFile( FILE *in );
+graph_t readFromFile( FILE *in );
 
-void printToFile( node_t graph, int width, int len, FILE *out ) {
-    if( width == 1 && len == 1 )
+void printToFile( graph_t graph, FILE *out ) {
+    if( graph.width == 1 && graph.len == 1 )
 	return;
     int i, j, nodown, noright, down, right;
-    node_t temp;
-    fprintf( out, "%d %d\n", width, len );
+    node_t temp, head = graph.head;
+    fprintf( out, "%d %d\n", graph.width, graph.len );
     while( 1 ) {
 	nodown = 1;
-	down = graph->id + width;
-	temp = graph;
-	for( i= 0; i < graph->ways; i++ ) { //sprawdzenie czy jestesmy w ostatnim rzedzie
-	    if( graph->conn[i]->id == down ) {
+	down = head->id + graph.width;
+	temp = head;
+	for( i= 0; i < head->ways; i++ ) { //sprawdzenie czy jestesmy w ostatnim rzedzie
+	    if( head->conn[i]->id == down ) {
 		nodown = 0;
 		break;
 	    }
@@ -131,9 +130,8 @@ void printToFile( node_t graph, int width, int len, FILE *out ) {
 	while( 1 ) {
 	    noright = 1;
 	    right = temp->id + 1;
-	    fprintf( out, "%d:\t", temp->id ); //wypisanie obecnego wezla
 	    for( j= 0; j < temp->ways; j++ ) //wypisanie polaczen obecnego wezla
-		fprintf( out, "%d: %g ", temp->conn[j]->id, temp->val[j] );
+		fprintf( out, "\t%d: %g ", temp->conn[j]->id, temp->val[j] );
 	    fprintf( out, "\n" );
 	    for( j= 0; j < temp->ways; j++ ) //sprawdzenie czy ostatnia kolumna
 		if( temp->conn[j]->id == right ) {
@@ -146,11 +144,53 @@ void printToFile( node_t graph, int width, int len, FILE *out ) {
 	}
 	if( nodown ) //jezeli ostatni rzad to wszystko juz wypisane - przerwij
 	    break;
-	graph = graph->conn[i]; //jezeli nie to przejdz w dol i kontynuuj
-	
+	head = head->conn[i]; //jezeli nie to przejdz w dol i kontynuuj	
     }
 }
 
-void divideGraph( node_t *graph );
+void divideGraph( graph_t *graph );
 
-void freeGraph( node_t graph );
+void freeGraph( graph_t graph ) {
+    node_t tempd, tempr, head = graph.head;
+    int i, j, nodown, noright, down, right;
+    graph.head = NULL;
+    while( head != NULL ) {
+
+	down = head->id + graph.width;
+	nodown = 1;
+	for( i= 0; i < head->ways; i++ ) { //sprawdzenie czy jestesmy w ostatnim rzedzie
+	    if( head->conn[i]->id == down ) {
+		nodown = 0;
+		break;
+	    }
+	}
+
+	if( !nodown ) //jezeli nie ostatni rzad
+	    tempd = head->conn[i]; //tymczasowo przechowujemy adres wezla nizej
+	else //w przeciwnym przypadku
+	    tempd = NULL; //ustawiamy kolejny wezel na null zeby petla sie zakonczyla
+
+	while( head != NULL ) {
+	    
+	    right = head->id + 1;
+	    noright = 1;
+	    for( j= 0; j < head->ways; j++ ) //sprawdzenie czy ostatnia kolumna
+		if( head->conn[j]->id == right ) {
+		    noright = 0;
+		    break;
+		}
+
+	    if( !noright ) //jezeli nie ostatnia kolumna
+		tempr = head->conn[j]; //tymczasowo przechowujemy adres kolejnego wezla
+	    else //jezeli ostania
+		tempr = NULL; //ustawiamy kolejny wezel na null zeby petla sie zakonczyla
+	    
+	    free( head->val ); //zwalniamy zaalokowana pamiec
+	    free( head->conn );
+	    free( head );
+
+	    head = tempr; //przechodzimy w prawo
+	}
+	head = tempd; //przechodzimy w dol
+    }
+}

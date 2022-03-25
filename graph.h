@@ -12,18 +12,26 @@ typedef struct node {
     int ways; //ile polaczen ma dany wezel
 } *node_t;
 
-node_t genFromParams( int x, int y, double a, double b ); //Generowanie grafu - szerokosc, wysokos, dolna waga, gorna waga
+typedef struct graph {
+    node_t head;
+    int width;
+    int len;
+} graph_t;
 
-node_t readFromFile( FILE *in ); //Czytanie z pliku
+graph_t genFromParams( int x, int y, double a, double b ); //Generowanie grafu - szerokosc, wysokos, dolna waga, gorna waga
 
-void printToFile( node_t graph, int width, int len, FILE *out ); //Zapisanie do pliku
+node_t makeNode( int width, int len, int current );
 
-void divideGraph( node_t *graph ); //Rozdzielanie na graf niespojny
+graph_t readFromFile( FILE *in ); //Czytanie z pliku
 
-void freeGraph( node_t graph );
+void printToFile( graph_t graph, FILE *out ); //Zapisanie do pliku
 
-int checkIntegrity( node_t graph ); //BFS
+void divideGraph( graph_t *graph ); //Rozdzielanie na graf niespojny
 
-void findPath( node_t graph ); //Dijsktra
+void freeGraph( graph_t graph );
+
+int checkIntegrity( graph_t graph ); //BFS
+
+void findPath( graph_t graph ); //Dijsktra
 
 #endif

@@ -109,7 +109,94 @@ graph_t genFromParams( int width, int len, double a, double b ) {
     return graph;
 }
 
-graph_t readFromFile( FILE *in );
+graph_t readFromFile( FILE *in ) {
+	int gsize, x, i, j, k, maxw=4;
+        double y;
+
+        graph_t graph;
+
+        if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2)
+                printf("Blad wczytywania z pliku");
+
+        while(fgetc(in)!='\n'){}
+
+        gsize = graph.width*graph.len;
+ 
+        node_t *nodes_tmp = malloc(gsize *sizeof(node_t));
+
+        int **conn_tmp = (int**)malloc(gsize *sizeof(int*));
+        for(i=0; i<gsize; i++){
+                conn_tmp[i] = (int*)malloc(maxw *sizeof(int));
+        }
+
+        double *val_tmp = malloc(maxw*sizeof(double));
+
+        for(i=0; i<gsize; i++){
+                k = 0;
+    
+                while((fgetc(in) != '\n') && (k<maxw)){
+                        if(fscanf(in, "%d :%lf", &x, &y) != 2)
+                                printf("Blad wczytywania z pliku");
+                        conn_tmp[i][k] = x;
+                        val_tmp[k] = y;
+                        k++;
+                }
+
+                nodes_tmp[i] = FileMakeNode(k);
+    
+                nodes_tmp[i]->id = i;
+    
+                for(j=0; j<k; j++)
+                        nodes_tmp[i]->val[j] = val_tmp[j];
+    
+                nodes_tmp[i]->ways = k;
+        }    
+
+        graph.head = nodes_tmp[0];
+
+        for(i=0; i<gsize; i++){
+                for(j=0; j<nodes_tmp[i]->ways; j++)
+                        nodes_tmp[i]->conn[j] = nodes_tmp[conn_tmp[i][j]];
+        }
+
+
+        free(conn_tmp);
+        free(val_tmp);
+        free(nodes_tmp);
+    
+
+        return graph;
+}
+
+node_t findNode(graph_t *graph, int n ) {
+        int d = 0, p = n, i, j;
+        node_t temp = graph->head;
+
+        while(p >= graph->width){
+                p -= graph->width;
+                d++;
+        }
+
+        for(i=0; i<d; i++){
+                for(j=0; j<temp->ways; j++){
+                        if(temp->id+graph->width == temp->conn[j]->id){
+                                temp = temp->conn[j];
+                                j=temp->ways;
+                        }
+                }
+        }
+
+        for(i=0; i<p; i++){
+                for(j=0; j<temp->ways; j++){
+                        if(temp->id+1 == temp->conn[j]->id){
+                                temp = temp->conn[j];
+                                j=temp->ways;
+                        }
+                }
+        }
+
+        return temp;
+}
 
 void printToFile( graph_t graph, FILE *out ) {
     if( graph.width == 1 && graph.len == 1 )
@@ -146,6 +233,20 @@ void printToFile( graph_t graph, FILE *out ) {
 	    break;
 	head = head->conn[i]; //jezeli nie to przejdz w dol i kontynuuj	
     }
+}
+
+void writeGraph(graph_t *graph){
+        int i, j;
+
+        node_t n = graph->head;
+
+        for(i=0; i<graph->len; i++){
+                for(j=0; j<graph->width; j++){
+                        printf("[%d] ", n->id);
+                        n = findNode(graph, n->id+1);
+                }
+                printf("\n");
+        }
 }
 
 void divideGraph( graph_t *graph );

@@ -235,19 +235,53 @@ void printToFile( graph_t graph, FILE *out ) {
     }
 }
 
-void writeGraph(graph_t *graph){
+void writeGraph(graph_t *graph, FILE *out){
         int i, j;
 
-        node_t n = graph->head;
+        node_t n = graph->head, tmp = NULL;
 
         for(i=0; i<graph->len; i++){
+                if(tmp != NULL){
+                        for(j=0; j<graph->width; j++) fprintf(out, " ^         ");
+                        fprintf(out, "\n");
+                        for(j=0; j<graph->width; j++) fprintf(out, " |         ");
+                        fprintf(out,"\n");
+                        for(j=0; j<graph->width; j++) {
+                                fprintf(out, "%.2lf       ", tmp->val[findConnIndex(tmp, tmp->id+graph->width)]);
+                                tmp = findNode(graph, tmp->id+1);
+                        }
+                        fprintf(out,"\n");
+                        for(j=0; j<graph->width; j++) fprintf(out, " |         ");
+                        fprintf(out,"\n");
+                        for(j=0; j<graph->width; j++) fprintf(out, " v         ");
+                        fprintf(out,"\n");
+                        }    
+
+                tmp = n;
                 for(j=0; j<graph->width; j++){
-                        printf("[%d] ", n->id);
+                        fprintf(out, "[%d]", n->id);
+                        if((n->id+1) % graph->width != 0){ 
+                                fprintf(out, "<-");
+                                fprintf(out, "%.2lf", n->val[findConnIndex(n, n->id+1)]);
+                                fprintf(out, "->");
+                        }
                         n = findNode(graph, n->id+1);
                 }
-                printf("\n");
+                fprintf(out,"\n");
         }
 }
+
+int findConnIndex(node_t node, int a) {
+        int i;
+
+        for(i=0; i<node->ways; i++){
+                if(node->conn[i]->id == a)
+                        return i;
+        }
+    
+        return EXIT_FAILURE;
+}
+
 
 void divideGraph( graph_t *graph );
 

@@ -44,7 +44,9 @@ int checkIntegrity( graph_t graph ); //BFS
 
 path findPath( graph_t *graph, int start, int end, int maxval ); //Dijsktra
 
-void writeGraph(graph_t *graph);
+void writeGraph(graph_t *graph, FILE *out);
+
+int findConnIndex(node_t node, int a);
 
 void infinity(double *d, int s, int n); 
 

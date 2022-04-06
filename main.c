@@ -22,18 +22,6 @@
 #define OUT_FILE 'o'
 #define IN_FILE 'i'
 
-#define INCORRECT_NUMBER_OF_ARGS 1
-#define UNKNOWN_FLAG 2
-#define INPUT_ERR 3
-#define NOT_INT 4
-#define NOT_POSITIVE_NB 5
-#define INPUT_NODE 6
-#define AMBIGOUS_OUT 7
-#define NO_ARG 8
-#define NO_INCOHERENT 9
-#define NO_PATH 10
-#define FILENAME_TAKEN -1
-
 int main( int argc, char *argv[] ) {
     int opt, from, to;
     int width = DEFAULT_WIDTH;
@@ -133,6 +121,7 @@ int main( int argc, char *argv[] ) {
 	//wczytaj graf z pliku
 	;
     }
-	checkIntegrity( graph );
+	printf( "%d\n", checkIntegrity( graph ));
 	//znajdz droge
+	freeGraph( graph );
 }

@@ -10,9 +10,7 @@ typedef struct q {
     struct q *next;
 } *q_t;
 
-q_t initQueue( node_t n );
-
-void addToQueue( q_t q, node_t n );
+void addToQueue( q_t *q, node_t n );
 
 node_t popFromQueue( q_t *q );
 
@@ -22,6 +20,6 @@ q_t priorityQueue( graph_t *graph, node_t n );
 
 void writeQueue(q_t q, int n); 
 
-void freeQueue( q_t q )
+void freeQueue( q_t q );
 
 #endif

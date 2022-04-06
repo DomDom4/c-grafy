@@ -2,18 +2,15 @@
 #include "queue.h"
 
 int checkIntegrity( graph_t graph ) { //BFS
-    q_t temp, working, checked = NULL;
+    q_t temp, working = NULL, checked = NULL;
     node_t head = graph.head;
-    working = initQueue( head );
     int i, count = 0, nodes = graph.width*graph.len;
+    addToQueue( &working, head );
     while( working != NULL ) { 
         for( i= 0; i < head->ways; i++ ) 
-            if( !inQueue( working, head->conn[i]->id ) && !inQueue( checked, head->conn[i]->id ) ) //dodanie do kolejki wezlow ktore nie zostaly jeszcze odwiedzone
-                addToQueue( working, head->conn[i] );
-        if( checked == NULL ) 
-            checked = initQueue( popFromQueue( &working ) );
-        else
-            addToQueue( checked, popFromQueue( &working ) );
+            if( !inQueue( working, head->conn[i]->id ) && !inQueue( checked, head->conn[i]->id ) ) 
+                addToQueue( &working, head->conn[i] );
+        addToQueue( &checked, popFromQueue( &working ) );
         if( working != NULL )
             for( i= 0; i < head->ways; i++ ) 
                 if( head->conn[i]->id == working->node->id ) { 
@@ -33,7 +30,7 @@ int checkIntegrity( graph_t graph ) { //BFS
 }
 
 
-path findPath( graph_t graph, int start, int end, int maxval ) { //Dijsktra
+path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
 	int gsize = graph->width * graph->len, i, k = 0;
 
         q_t Q = malloc(gsize *sizeof(node_t));
@@ -70,8 +67,7 @@ path findPath( graph_t graph, int start, int end, int maxval ) { //Dijsktra
                 Qd--;
         }
     
-/*
-        -- Sprawdzenie przejść --
+/*        -- Sprawdzenie przejść --
 
         int tmp = end;
         printf("\nPrzejscia od ostatniego: ");

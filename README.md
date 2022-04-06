@@ -6,5 +6,5 @@
 5. generator grafu z parametrow - Dominika
 6. rozdzielanie grafu spojnego na niespojny (w pliku graph.c) - Piotrek
 7. czytanie grafu z pliku (w pliku graph.c) - Piotrek
-8. napisanie makefile'a
+8. napisanie makefile'a - Dominika
 9. napisanie testow

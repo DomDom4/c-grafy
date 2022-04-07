@@ -292,21 +292,22 @@ int findConnIndex(node_t node, int a) {
 void divideGraph( graph_t *graph );
 
 void freeGraph( graph_t graph ) {
-    node_t tempdown, tempright, head = graph.head;
-    int i, j, nodown, noright, down, right;
+    node_t tempdown, head = graph.head;
+    node_t *nodes = malloc( graph.width*graph.len * sizeof *nodes );
+    int i, j, isdown, isright, down, right, nodecount = 0;
     graph.head = NULL;
     while( head != NULL ) {
 
 	down = head->id + graph.width;
-	nodown = 1;
+	isdown = 0;
 	for( i= 0; i < head->ways; i++ ) { 
 	    if( head->conn[i]->id == down ) {
-		nodown = 0;
+		isdown = 1;
 		break;
 	    }
 	}
-
-	if( !nodown ) 
+	
+	if( isdown ) 
 	    tempdown = head->conn[i]; 
 	else 
 	    tempdown = NULL; 
@@ -314,24 +315,27 @@ void freeGraph( graph_t graph ) {
 	while( head != NULL ) {
 	    
 	    right = head->id + 1;
-	    noright = 1;
+	    isright = 0;
 	    for( j= 0; j < head->ways; j++ ) 
 		if( head->conn[j]->id == right ) {
-		    noright = 0;
+		    isright = 1;
 		    break;
 		}
 
-	    if( !noright ) 
-		tempright = head->conn[j]; 
-	    else 
-		tempright = NULL; 
-	    
-	    free( head->val ); 
-	    free( head->conn );
-	    free( head );
+	    nodes[nodecount] = head;
+	    nodecount++;
 
-	    head = tempright; 
+	    if( graph.width > 1 && isright ) 
+		head = head->conn[j]; 
+	    else 
+		head = NULL; 
 	}
 	head = tempdown;     
     }
+    for( i= 0; i < nodecount; i++ ) {
+	free( nodes[i]->val );
+	free( nodes[i]->conn );
+	free( nodes[i] );
+    }
+    free( nodes );
 }

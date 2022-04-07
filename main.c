@@ -116,6 +116,7 @@ int main( int argc, char *argv[] ) {
     if( in == NULL ) {
 	graph = genFromParams( width, len, down, up );
 	printToFile( graph, out );
+	fclose( out );
     }
     if( out == NULL ) {
 	//wczytaj graf z pliku

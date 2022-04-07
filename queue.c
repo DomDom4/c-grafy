@@ -53,14 +53,14 @@ q_t priorityQueue( graph_t *graph, node_t n ) {
         q_t head, temp;
         int i, gsize = graph->width*graph->len;
 
-        head = initQueue(n);
+        addToQueue( &head, n);
         head->node = graph->head;
         temp = head;
 
         while(gsize>0){
                 for(i=0; i<temp->node->ways; i++){
                         if(!inQueue(head, temp->node->conn[i]->id))
-                                addToQueue(head, temp->node->conn[i]);
+                                addToQueue( &head, temp->node->conn[i] );
                 }
                 temp = temp->next;
                 gsize--;

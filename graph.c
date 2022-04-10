@@ -214,7 +214,7 @@ graph_t readFromFile( FILE *in ) {
 }
 
 node_t findNode(graph_t *graph, int n ) {
-        q_t head, temp;
+        q_t head=NULL, temp=NULL;
         int i, gsize = graph->width*graph->len;
 
         addToQueue(&head, graph->head);

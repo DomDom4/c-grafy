@@ -50,7 +50,7 @@ void freeQueue( q_t q ) {
 }
 
 q_t priorityQueue( graph_t *graph, node_t n ) { 
-        q_t head, temp;
+        q_t head=NULL, temp=NULL;
         int i, gsize = graph->width*graph->len;
 
         addToQueue( &head, n);

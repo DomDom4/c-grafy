@@ -44,6 +44,11 @@ path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
         node_t c = findNode(graph, start);
         path dp = malloc(sizeof(path));
 
+	if((Q == NULL) || (d == NULL) || (p == NULL) || (temp == NULL) || (dp == NULL)){
+                printf("NOT_ENOUGH_MEMORY\n");
+                exit( NOT_ENOUGH_MEMORY );
+        }
+	
         Q = priorityQueue(graph, c); 
         //writeQueue(Q, gsize);
 
@@ -54,8 +59,8 @@ path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
     
         while(Qd > 0){ 
                 if((c = popFromQueue(&Q)) == NULL){
-                        printf("Blad");
-                        break;
+                        printf("EMPTY_QUEUE\n"); 
+                        exit( EMPTY_QUEUE );
                 }
                 //printf("%d -> ", c->id);
                 for(i=0; i<c->ways; i++){
@@ -93,6 +98,11 @@ path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
 
         dp->nodes = malloc(k*sizeof(node_t));
 
+	if(dp->nodes == NULL){
+        printf("NOT_ENOUGH_MEMORY\n");
+                exit( NOT_ENOUGH_MEMORY );
+        }
+	
         for(i=0; i<k; i++)
                 dp->nodes[i] = temp[k-i-1];
 

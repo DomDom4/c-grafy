@@ -12,6 +12,10 @@
 #define NO_INCOHERENT 9
 #define NO_PATH 10
 #define NOT_ENOUGH_MEMORY 11
+#define NO_NODE 12
+#define FILE_FORMAT_ERR 13
+#define EMPTY_QUEUE 14
+
 #define FILENAME_TAKEN -1
 
 void instructionMsg( char* progName );

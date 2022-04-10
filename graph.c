@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "queue.h"
 #include "error.h"
 
 node_t makeNode( int width, int len, int current ) { 

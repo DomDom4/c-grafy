@@ -115,12 +115,48 @@ graph_t genFromParams( int width, int len, double a, double b ) {
     return graph;
 }
 
+node_t fileMakeNode( int ways ) { //funkcja pomocnicza do funkcji generujacej
+    node_t nd = malloc( sizeof nd + ways * sizeof nd->val + ways * sizeof nd->conn );
+    nd->conn = malloc( ways * sizeof nd->conn );
+    nd->val = malloc( ways * sizeof nd->val );
+    if( nd->conn == NULL || nd->val == NULL || nd == NULL ) {
+        printf( "NOT_ENOUGH_MEM\n" );
+        exit( 11 );
+    }
+    return nd;
+}
+
+void commaToDott(FILE *in) {
+        FILE *out = fopen("tmp", "w");
+        char c, rep=',';    
+
+        while(1){
+                c = fgetc(in);
+    
+                if(c == EOF)
+                        break;
+
+                if(c == rep) 
+                        fprintf(out, "."); 
+                else
+                        fprintf(out, "%c", c); 
+        }
+
+        fclose(out);
+}
+
 graph_t readFromFile( FILE *in ) {
 	int gsize, x, i, j, k, maxw=4;
         double y;
 
         graph_t graph;
 
+	commaToDott(in);
+
+        fclose(in);
+
+        in = fopen("tmp", "r");
+	
         if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2)
                 printf("Blad wczytywania z pliku");
 
@@ -158,6 +194,9 @@ graph_t readFromFile( FILE *in ) {
                 nodes_tmp[i]->ways = k;
         }    
 
+	fclose(in);
+        remove("tmp");
+	
         graph.head = nodes_tmp[0];
 
         for(i=0; i<gsize; i++){
@@ -170,38 +209,32 @@ graph_t readFromFile( FILE *in ) {
         free(val_tmp);
         free(nodes_tmp);
     
-
         return graph;
 }
 
 node_t findNode(graph_t *graph, int n ) {
-        int d = 0, p = n, i, j;
-        node_t temp = graph->head;
+        q_t head, temp;
+        int i, gsize = graph->width*graph->len;
 
-        while(p >= graph->width){
-                p -= graph->width;
-                d++;
-        }
+        head = initQueue(graph->head);
+        temp = head;
 
-        for(i=0; i<d; i++){
-                for(j=0; j<temp->ways; j++){
-                        if(temp->id+graph->width == temp->conn[j]->id){
-                                temp = temp->conn[j];
-                                j=temp->ways;
+        while(gsize>0){
+                for(i=0; i<temp->node->ways; i++){
+                        if(temp->node->conn[i]->id == n){
+                                return temp->node->conn[i];
                         }
+                        if(!inQueue(head, temp->node->conn[i]->id))
+                                addToQueue(head, temp->node->conn[i]);
                 }
+                temp = temp->next;
+                gsize--;
         }
 
-        for(i=0; i<p; i++){
-                for(j=0; j<temp->ways; j++){
-                        if(temp->id+1 == temp->conn[j]->id){
-                                temp = temp->conn[j];
-                                j=temp->ways;
-                        }
-                }
-        }
+        freeQueue( temp );
+        freeQueue( head );
 
-        return temp;
+        exit(6);
 }
 
 void printToFile( graph_t graph, FILE *out ) {
@@ -242,36 +275,76 @@ void printToFile( graph_t graph, FILE *out ) {
 }
 
 void writeGraph(graph_t *graph, FILE *out){
-        int i, j;
+         int i, j, a, gsize = graph->width*graph->len;
 
-        node_t n = graph->head, tmp = NULL;
+        node_t n = graph->head, tmp = NULL, tmp2;
+
+
 
         for(i=0; i<graph->len; i++){
                 if(tmp != NULL){
-                        for(j=0; j<graph->width; j++) fprintf(out, " ^         ");
+                        tmp2 = tmp;
+                        for(j=0; j<graph->width; j++){
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                        fprintf(out, " ^         ");
+                                else
+                                        fprintf(out, "           ");
+                                tmp2 = findNode(graph, tmp->id+1);
+                        }
                         fprintf(out, "\n");
-                        for(j=0; j<graph->width; j++) fprintf(out, " |         ");
+                        tmp2 = tmp;
+                        for(j=0; j<graph->width; j++){
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                        fprintf(out, " |         ");
+                                else
+                                        fprintf(out, "           ");
+                                tmp2 = findNode(graph, tmp->id+1);
+                        }
+
                         fprintf(out,"\n");
+                        tmp2 = tmp;
                         for(j=0; j<graph->width; j++) {
-                                fprintf(out, "%.2lf       ", tmp->val[findConnIndex(tmp, tmp->id+graph->width)]);
-                                tmp = findNode(graph, tmp->id+1);
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                        fprintf(out, "%.2lf       ", tmp2->val[findConnIndex(tmp2, tmp2->id+graph->width)]);
+                                else
+                                        fprintf(out, "           ");
+                                tmp2 = findNode(graph, tmp2->id+1);
                         }
                         fprintf(out,"\n");
-                        for(j=0; j<graph->width; j++) fprintf(out, " |         ");
+                        tmp2 = tmp;
+                        for(j=0; j<graph->width; j++){
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                        fprintf(out, " |         ");
+                                else
+                                        fprintf(out, "           ");
+                                tmp2 = findNode(graph, tmp->id+1);
+                        }
                         fprintf(out,"\n");
-                        for(j=0; j<graph->width; j++) fprintf(out, " v         ");
+                        tmp2 = tmp;
+                        for(j=0; j<graph->width; j++){
+				if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                        fprintf(out, " v         ");
+                                else
+                                        fprintf(out, "           ");
+                                tmp2 = findNode(graph, tmp->id+1);
+                        }
                         fprintf(out,"\n");
-                        }    
+                }
 
                 tmp = n;
                 for(j=0; j<graph->width; j++){
                         fprintf(out, "[%d]", n->id);
-                        if((n->id+1) % graph->width != 0){ 
-                                fprintf(out, "<-");
-                                fprintf(out, "%.2lf", n->val[findConnIndex(n, n->id+1)]);
-                                fprintf(out, "->");
+                        if((n->id+1) % graph->width != 0){
+                                if((a = findConnIndex(n, n->id+1)) != -1){
+                                        fprintf(out, "<-");
+                                        fprintf(out, "%.2lf", n->val[a]);
+                                        fprintf(out, "->");
+                                }
+                                else
+                                        fprintf(out, "        ");
                         }
-                        n = findNode(graph, n->id+1);
+                        if(n->id+1<gsize)
+                                n = findNode(graph, n->id+1);
                 }
                 fprintf(out,"\n");
         }
@@ -285,7 +358,7 @@ int findConnIndex(node_t node, int a) {
                         return i;
         }
     
-        return EXIT_FAILURE;
+        return -1;
 }
 
 

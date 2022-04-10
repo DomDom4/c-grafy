@@ -217,7 +217,7 @@ node_t findNode(graph_t *graph, int n ) {
         q_t head, temp;
         int i, gsize = graph->width*graph->len;
 
-        head = initQueue(graph->head);
+        addToQueue(&head, graph->head);
         temp = head;
 
         while(gsize>0){
@@ -226,7 +226,7 @@ node_t findNode(graph_t *graph, int n ) {
                                 return temp->node->conn[i];
                         }
                         if(!inQueue(head, temp->node->conn[i]->id))
-                                addToQueue(head, temp->node->conn[i]);
+                                addToQueue(&head, temp->node->conn[i]);
                 }
                 temp = temp->next;
                 gsize--;

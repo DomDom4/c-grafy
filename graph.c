@@ -121,8 +121,8 @@ node_t fileMakeNode( int ways ) { //funkcja pomocnicza do funkcji generujacej
     nd->conn = malloc( ways * sizeof nd->conn );
     nd->val = malloc( ways * sizeof nd->val );
     if( nd->conn == NULL || nd->val == NULL || nd == NULL ) {
-        printf( "NOT_ENOUGH_MEM\n" );
-        exit( 11 );
+        printf( "NOT_ENOUGH_MEMORY\n" );
+        exit( NOT_ENOUGH_MEMORY );
     }
     return nd;
 }
@@ -158,8 +158,10 @@ graph_t readFromFile( FILE *in ) {
 
         in = fopen("tmp", "r");
 	
-        if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2)
-                printf("Blad wczytywania z pliku");
+        if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2){
+                printf("FILE_FORMAT_ERR");
+                exit( FILE_FORMAT_ERR );
+        }
 
         while(fgetc(in)!='\n'){}
 
@@ -174,12 +176,19 @@ graph_t readFromFile( FILE *in ) {
 
         double *val_tmp = malloc(maxw*sizeof(double));
 
+	if((nodes_tmp == NULL) || (conn_tmp == NULL) || (val_tmp == NULL)){
+                printf("NOT_ENOUGH_MEMORY\n");
+                exit( NOT_ENOUGH_MEMORY );
+        }
+	
         for(i=0; i<gsize; i++){
                 k = 0;
     
                 while((fgetc(in) != '\n') && (k<maxw)){
-                        if(fscanf(in, "%d :%lf", &x, &y) != 2)
-                                printf("Blad wczytywania z pliku");
+                        if(fscanf(in, "%d :%lf", &x, &y) != 2){
+				printf("FILE_FORMAT_ERR");
+				exit( FILE_FORMAT_ERR );
+			}
                         conn_tmp[i][k] = x;
                         val_tmp[k] = y;
                         k++;
@@ -235,7 +244,8 @@ node_t findNode(graph_t *graph, int n ) {
         freeQueue( temp );
         freeQueue( head );
 
-        exit(6);
+        printf("NO_NODE\n");
+        exit(NO_NODE);
 }
 
 void printToFile( graph_t graph, FILE *out ) {

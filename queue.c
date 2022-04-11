@@ -54,7 +54,6 @@ q_t priorityQueue( graph_t *graph, node_t n ) {
         int i, gsize = graph->width*graph->len;
 
         addToQueue( &head, n);
-        head->node = graph->head;
         temp = head;
 
         while(gsize>0){

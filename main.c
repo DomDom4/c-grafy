@@ -18,7 +18,6 @@
 #define LENGHT 'y'
 #define DOWN 'a'
 #define UP 'b'
-#define NB_OF_GRAPHS 'n'
 #define OUT_FILE 'o'
 #define IN_FILE 'i'
 
@@ -26,7 +25,6 @@ int main( int argc, char *argv[] ) {
     int opt, from, to;
     int width = DEFAULT_WIDTH;
     int len = DEFAULT_LENGHT; 
-    int nog = DEFAULT_NB_OF_GRAPHS; 
     double down = DEFAULT_DOWN;
     double up = DEFAULT_UP;	
     FILE *in = NULL, *out = NULL;
@@ -51,9 +49,6 @@ int main( int argc, char *argv[] ) {
 		break;
 	    case UP:
 		up = atoi( optarg );
-		break;
-	    case NB_OF_GRAPHS:
-		nog = atoi( optarg );
 		break;
 	    case OUT_FILE:
 		if( !access( optarg, F_OK ) ) {
@@ -119,10 +114,12 @@ int main( int argc, char *argv[] ) {
 	fclose( out );
     }
     if( out == NULL ) {
-	//wczytaj graf z pliku
-	;
+	graph = readFromFile( in );
     }
-	printf( "%d\n", checkIntegrity( graph ));
-	//znajdz droge
+	if( checkIntegrity( graph ) )
+	    printf( "Graf jest spojny\n" );
+	else
+	    printf( "Graf nie jest spojny\n" );
+	findPath( &graph, from, to, up+0.1 );
 	freeGraph( graph );
 }

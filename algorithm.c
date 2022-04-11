@@ -1,5 +1,6 @@
 #include "graph.h"
 #include "queue.h"
+#include "error.h"
 
 int checkIntegrity( graph_t graph ) { //BFS
     q_t temp, working = NULL, checked = NULL;

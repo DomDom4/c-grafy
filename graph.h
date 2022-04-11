@@ -34,8 +34,6 @@ graph_t readFromFile( FILE *in ); //Czytanie z pliku
 
 void printToFile( graph_t graph, FILE *out ); //Zapisanie do pliku
 
-void divideGraph( graph_t *graph ); //Rozdzielanie na graf niespojny
-
 node_t findNode(graph_t *graph, int n );
 
 void freeGraph( graph_t graph );

@@ -159,7 +159,8 @@ graph_t readFromFile( FILE *in ) {
         in = fopen("tmp", "r");
 	
         if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2){
-                printf("FILE_FORMAT_ERR");
+                printf("FILE_FORMAT_ERR\n");
+		remove( "tmp" );
                 exit( FILE_FORMAT_ERR );
         }
 
@@ -178,6 +179,7 @@ graph_t readFromFile( FILE *in ) {
 
 	if((nodes_tmp == NULL) || (conn_tmp == NULL) || (val_tmp == NULL)){
                 printf("NOT_ENOUGH_MEMORY\n");
+		remove( "tmp" );
                 exit( NOT_ENOUGH_MEMORY );
         }
 	
@@ -186,7 +188,8 @@ graph_t readFromFile( FILE *in ) {
     
                 while((fgetc(in) != '\n') && (k<maxw)){
                         if(fscanf(in, "%d :%lf", &x, &y) != 2){
-				printf("FILE_FORMAT_ERR");
+				printf("FILE_FORMAT_ERR\n");
+				remove( "tmp" );
 				exit( FILE_FORMAT_ERR );
 			}
                         conn_tmp[i][k] = x;
@@ -249,8 +252,6 @@ node_t findNode(graph_t *graph, int n ) {
 }
 
 void printToFile( graph_t graph, FILE *out ) {
-    if( graph.width == 1 && graph.len == 1 )
-	return;
     int i, j, nodown, noright, down, right;
     node_t temp, head = graph.head;
     fprintf( out, "%d %d\n", graph.width, graph.len );
@@ -268,7 +269,7 @@ void printToFile( graph_t graph, FILE *out ) {
 	    noright = 1;
 	    right = temp->id + 1;
 	    for( j= 0; j < temp->ways; j++ ) 
-		fprintf( out, "\t%d :%g ", temp->conn[j]->id, temp->val[j] );
+		fprintf( out, "/t%d :%g ", temp->conn[j]->id, temp->val[j] );
 	    fprintf( out, "\n" );
 	    for( j= 0; j < temp->ways; j++ ) 
 		if( temp->conn[j]->id == right ) {
@@ -447,8 +448,6 @@ int findConnIndex(node_t node, int a) {
         return -1;
 }
 
-
-void divideGraph( graph_t *graph );
 
 void freeGraph( graph_t graph ) {
     node_t tempdown, head = graph.head;

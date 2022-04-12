@@ -287,7 +287,7 @@ void printToFile( graph_t graph, FILE *out ) {
 }
 
 void writeGraph(graph_t *graph, FILE *out){
-	 int i, j, a, ti=0,  gsize = graph->width*graph->len, g=gsize-1, s, ts;
+	  int i, j, a, ti=0,  gsize = graph->width*graph->len, g=gsize-1, s, ts;
 
         node_t n = graph->head, tmp = NULL, tmp2, tmp3;
 
@@ -299,12 +299,14 @@ void writeGraph(graph_t *graph, FILE *out){
         for(i=0; i<graph->len; i++){
                 if(tmp != NULL){
                         tmp2 = tmp;
+                        tmp3 = findNode(graph, tmp->id+graph->width);
                         for(j=0; j<graph->width; j++){
-                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
                                         fprintf(out, "^         ");
                                 else
-                                        fprintf(out, "         ");
-                                tmp2 = findNode(graph, tmp2->id+1);
+                                        fprintf(out, "          ");
+                                if(tmp3->id+1 < gsize)
+                                        tmp3 = findNode(graph, tmp3->id+1);
 
                                 for(s=0; s<ti; s++)
                                         fprintf(out, " ");
@@ -314,7 +316,7 @@ void writeGraph(graph_t *graph, FILE *out){
                         tmp2 = tmp;
                         for(j=0; j<graph->width; j++){
                                 tmp3 = findNode(graph, tmp2->id+graph->width);
-                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
                                         fprintf(out, "|");
                                 else
                                         fprintf(out, " ");
@@ -322,10 +324,10 @@ void writeGraph(graph_t *graph, FILE *out){
                                 for(s=0; s<ti; s++)
                                         fprintf(out, " ");
 
-                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
                                         fprintf(out, "|        ");
                                 else
-                                        fprintf(out, "        ");
+                                        fprintf(out, "         ");
 
                                 tmp2 = findNode(graph, tmp2->id+1);
                         }
@@ -337,12 +339,12 @@ void writeGraph(graph_t *graph, FILE *out){
                                 if((a = findConnIndex(tmp3, tmp3->id-graph->width)) != -1)
                                         fprintf(out, "%.2lf ", tmp3->val[a]);
                                 else
-                                        fprintf(out, "     ");
+                                        fprintf(out, "    ");
 
                                 if((a = findConnIndex(tmp2, tmp2->id+graph->width)) != -1)
                                         fprintf(out, "%.2lf ", tmp2->val[a]);
                                 else
-                                        fprintf(out, "       ");
+                                        fprintf(out, "    ");
 
                                 tmp2 = findNode(graph, tmp2->id+1);
                         }
@@ -351,7 +353,7 @@ void writeGraph(graph_t *graph, FILE *out){
                         tmp2 = tmp;
                         for(j=0; j<graph->width; j++){
                                 tmp3 = findNode(graph, tmp2->id+graph->width);
-                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
+                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
                                         fprintf(out, "|");
                                 else
                                         fprintf(out, " ");
@@ -359,26 +361,26 @@ void writeGraph(graph_t *graph, FILE *out){
                                 for(s=0; s<ti; s++)
                                         fprintf(out, " ");
 
-                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
                                         fprintf(out, "|        ");
                                 else
-                                        fprintf(out, "        ");
+                                        fprintf(out, "         ");
 
                                 tmp2 = findNode(graph, tmp2->id+1);
                         }
 
                         fprintf(out,"\n");
-                        tmp3 = findNode(graph, tmp->id+graph->width);
+                        tmp2 = tmp;
                         for(j=0; j<graph->width; j++){
                                 for(s=0; s<ti; s++)
                                         fprintf(out, " ");
 
-                                if(findConnIndex(tmp3, tmp3->id-graph->width) != -1)
+                                if(findConnIndex(tmp2, tmp2->id+graph->width) != -1)
                                         fprintf(out, " v        ");
                                 else
                                         fprintf(out, "          ");
-                                if(tmp3->id+1 < gsize)
-                                        tmp3 = findNode(graph, tmp3->id+1);
+                                if(tmp2->id+1 < gsize)
+                                        tmp2 = findNode(graph, tmp2->id+1);
                         }
                         fprintf(out,"\n");
                 }
@@ -434,7 +436,7 @@ void writeGraph(graph_t *graph, FILE *out){
                 for(s=0; s<ti; s++)
                         fprintf(out, " ");
                 fprintf(out, "/\n");
-        }
+	}
 }
 
 int findConnIndex(node_t node, int a) {

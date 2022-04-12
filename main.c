@@ -114,12 +114,27 @@ int main( int argc, char *argv[] ) {
 	fclose( out );
     }
     if( out == NULL ) {
-	graph = readFromFile( in );
+	up = readFromFile(&graph, in);//wczytaj graf z pliku
     }
-	if( checkIntegrity( graph ) )
+
+    if( checkIntegrity( graph ) )
 	    printf( "Graf jest spojny\n" );
-	else
-	    printf( "Graf nie jest spojny\n" );
-	findPath( &graph, from, to, up+0.1 );
-	freeGraph( graph );
+    else {
+	    printf("Graf nie jest spojny\n");
+            exit( NO_INCOHERENT );
+    }   
+
+    writeGraph(&graph, stdout);
+    printf("\n");
+
+    path p = findPath(graph, from, to, up);//znajdz droge
+
+    for(i=0; i<p->n_nb-1; i++)
+	    printf("%d -> ", p->nodes[i]->id);
+    printf("%d", p->nodes[n_nb-1]->id);
+
+    printf("\nDlugosc sciezki: %lf\n", p->val_s);
+
+    freeGraph( graph );
+
 }

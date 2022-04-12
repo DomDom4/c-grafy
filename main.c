@@ -127,11 +127,12 @@ int main( int argc, char *argv[] ) {
     writeGraph(&graph, stdout);
     printf("\n");
 
-    path p = findPath(graph, from, to, up);//znajdz droge
+    path p = findPath(&graph, from, to, up);//znajdz droge
 
+    int i;
     for(i=0; i<p->n_nb-1; i++)
 	    printf("%d -> ", p->nodes[i]->id);
-    printf("%d", p->nodes[n_nb-1]->id);
+    printf("%d", p->nodes[p->n_nb-1]->id);
 
     printf("\nDlugosc sciezki: %lf\n", p->val_s);
 

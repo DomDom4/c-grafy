@@ -1,0 +1,12 @@
+-> mygraph - plik j*
+-> test1_1 - graf 3x3, nieskierowany
+-> test1_2 - graf 3x3, skierowany
+-> test1_3 - graf 3x3, skierowany z przecinkami zamiast kropek
+-> test1_4 - graf 3x3, skierowany, bez niektórych ścieżek
+-> test2_1 - graf o szerokości 1, nieskierowany
+-> test2_2 - graf o szerokości 1, skierowany
+-> test2_3 - graf o szerokości 1, o wszystkich krawędziach równych 1
+-> test2_4_blad - graf o szerokości 1, bez jednej ścieżki (zwraca błąd)
+-> test3_1 - graf z jedną krawędzią pionowo
+-> test3_2 - graf z jedną krawędzią poziomo
+-> test4 - graf niespojny

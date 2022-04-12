@@ -18,8 +18,7 @@ void addToQueue( q_t *q, node_t n ) { //q - glowa kolejki
 }
 
 node_t popFromQueue( q_t *q ) { 
-    if( *q == NULL ) { 
-        printf( "Queue empty\n" );
+    if( *q == NULL ) {
         return NULL;
     }   
     node_t show = (*q)->node;

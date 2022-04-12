@@ -247,7 +247,7 @@ node_t findNode(graph_t *graph, int n ) {
         freeQueue( temp );
         freeQueue( head );
 
-        printf("NO_NODE\n");
+        printf("NO_NODE - %d\n", n);
         exit(NO_NODE);
 }
 

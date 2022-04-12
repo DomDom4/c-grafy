@@ -56,8 +56,7 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
     
         while(Qd > 0){ 
                 if((c = popFromQueue(&Q)) == NULL){
-                        printf("EMPTY_QUEUE\n"); 
-                        exit( EMPTY_QUEUE );
+                        break;
                 }
                 //printf("%d -> ", c->id);
                 for(i=0; i<c->ways; i++){

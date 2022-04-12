@@ -187,7 +187,7 @@ graph_t readFromFile( FILE *in ) {
                 k = 0;
     
                 while((fgetc(in) != '\n') && (k<maxw)){
-                        if(fscanf(in, "%d :%lf", &x, &y) != 2){
+                        if(fscanf(in, "%d :%lg", &x, &y) != 2){
 				printf("FILE_FORMAT_ERR\n");
 				remove( "tmp" );
 				exit( FILE_FORMAT_ERR );
@@ -269,7 +269,7 @@ void printToFile( graph_t graph, FILE *out ) {
 	    noright = 1;
 	    right = temp->id + 1;
 	    for( j= 0; j < temp->ways; j++ ) 
-		fprintf( out, "/t%d :%g ", temp->conn[j]->id, temp->val[j] );
+		fprintf( out, "\t%d :%lf ", temp->conn[j]->id, temp->val[j] );
 	    fprintf( out, "\n" );
 	    for( j= 0; j < temp->ways; j++ ) 
 		if( temp->conn[j]->id == right ) {

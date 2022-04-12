@@ -13,11 +13,7 @@ int checkIntegrity( graph_t graph ) { //BFS
                 addToQueue( &working, head->conn[i] );
         addToQueue( &checked, popFromQueue( &working ) );
         if( working != NULL )
-            for( i= 0; i < head->ways; i++ ) 
-                if( head->conn[i]->id == working->node->id ) { 
-                    head = head->conn[i];
-                    break;
-                }
+	    head = working->node;
     }   
     temp = checked;
     while( checked != NULL ) { 

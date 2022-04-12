@@ -27,7 +27,7 @@ int checkIntegrity( graph_t graph ) { //BFS
 }
 
 
-path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
+path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
 	int gsize = graph->width * graph->len, i, k = 0;
 
         q_t Q = malloc(gsize *sizeof(node_t));
@@ -113,7 +113,7 @@ path findPath( graph_t *graph, int start, int end, int maxval ) { //Dijsktra
         return dp;
 }
 
-void infinity(double *d, int s, int n)
+void infinity(double *d, int s, double n)
 {
         int i;
 

@@ -30,7 +30,7 @@ node_t makeNode( int width, int len, int current );
 
 node_t fileMakeNode( int ways);
 
-graph_t readFromFile( FILE *in ); //Czytanie z pliku
+double readFromFile( graph_t *graph, FILE *in ); //Czytanie z pliku
 
 void printToFile( graph_t graph, FILE *out ); //Zapisanie do pliku
 

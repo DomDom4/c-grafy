@@ -156,7 +156,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
         in = fopen("tmp", "r");
 	
-        if(fscanf(in, "%d %d", &graph.len, &graph.width) != 2){
+        if(fscanf(in, "%d %d", &graph->len, &graph->width) != 2){
                 printf("FILE_FORMAT_ERR\n");
 		remove( "tmp" );
                 exit( FILE_FORMAT_ERR );
@@ -164,7 +164,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
         while(fgetc(in)!='\n'){}
 
-        gsize = graph.width*graph.len;
+        gsize = graph->width*graph->len;
  
         node_t *nodes_tmp = malloc(gsize *sizeof(node_t));
 
@@ -211,7 +211,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 	fclose(in);
         remove("tmp");
 	
-        graph.head = nodes_tmp[0];
+        graph->head = nodes_tmp[0];
 
         for(i=0; i<gsize; i++){
                 for(j=0; j<nodes_tmp[i]->ways; j++)

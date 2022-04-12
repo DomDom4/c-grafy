@@ -40,13 +40,13 @@ void freeGraph( graph_t graph );
 
 int checkIntegrity( graph_t graph ); //BFS
 
-path findPath( graph_t *graph, int start, int end, int maxval ); //Dijsktra
+path findPath( graph_t *graph, int start, int end, double maxval ); //Dijsktra
 
 void writeGraph(graph_t *graph, FILE *out);
 
 int findConnIndex(node_t node, int a);
 
-void infinity(double *d, int s, int n); 
+void infinity(double *d, int s, double n); 
 
 void null(node_t *t, int n); 
 

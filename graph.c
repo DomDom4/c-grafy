@@ -146,11 +146,9 @@ void commaToDott(FILE *in) {
         fclose(out);
 }
 
-graph_t readFromFile( FILE *in ) {
+double readFromFile( graph_t *graph, FILE *in ) {
 	int gsize, x, i, j, k, maxw=4;
-        double y;
-
-        graph_t graph;
+        double y, max = 0;
 
 	commaToDott(in);
 
@@ -192,6 +190,9 @@ graph_t readFromFile( FILE *in ) {
 				remove( "tmp" );
 				exit( FILE_FORMAT_ERR );
 			}
+			if(y > max)
+				max = y;
+			
                         conn_tmp[i][k] = x;
                         val_tmp[k] = y;
                         k++;
@@ -222,7 +223,7 @@ graph_t readFromFile( FILE *in ) {
         free(val_tmp);
         free(nodes_tmp);
     
-        return graph;
+        return max;
 }
 
 node_t findNode(graph_t *graph, int n ) {

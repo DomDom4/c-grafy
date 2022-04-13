@@ -3,6 +3,7 @@
 -> test1_2 - graf 3x3, skierowany
 -> test1_3 - graf 3x3, skierowany z przecinkami zamiast kropek
 -> test1_4 - graf 3x3, skierowany, bez niektórych ścieżek
+-> test1_5 - graf 3x3, z błędną ilością węzłów (8 zamiast 9)
 -> test2_1 - graf o szerokości 1, nieskierowany
 -> test2_2 - graf o szerokości 1, skierowany
 -> test2_3 - graf o szerokości 1, o wszystkich krawędziach równych 1

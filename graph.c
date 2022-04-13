@@ -497,10 +497,8 @@ void freeGraph( graph_t graph ) {
 	}
 	head = tempdown;     
     }
-    for( i= 0; i < nodecount; i++ ) {
-	free( nodes[i]->val );
-	free( nodes[i]->conn );
+    for( i= 0; i < nodecount; i++ ) 
 	free( nodes[i] );
-    }
+   
     free( nodes );
 }

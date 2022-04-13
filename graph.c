@@ -128,7 +128,7 @@ node_t fileMakeNode( int ways ) { //funkcja pomocnicza do funkcji generujacej
 }
 
 void commaToDott(FILE *in) {
-        FILE *out = fopen("tmp", "w");
+        FILE *out = fopen("5zuk4j2022_tmpfile", "w");
         char c, rep=',';    
 
         while(1){
@@ -155,11 +155,11 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
         fclose(in);
 
-        in = fopen("tmp", "r");
+        in = fopen("5zuk4j2022_tmpfile", "r");
 	
         if(fscanf(in, "%d %d", &graph->len, &graph->width) != 2){
                 printf("FILE_FORMAT_ERR\n");
-		remove( "tmp" );
+		remove( "5zuk4j2022_tmpfile" );
                 exit( FILE_FORMAT_ERR );
         }
 
@@ -178,7 +178,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
 	if((nodes_tmp == NULL) || (conn_tmp == NULL) || (val_tmp == NULL)){
                 printf("NOT_ENOUGH_MEMORY\n");
-		remove( "tmp" );
+		remove( "5zuk4j2022_tmpfile" );
                 exit( NOT_ENOUGH_MEMORY );
         }
 	
@@ -192,7 +192,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 			}
                         if(fscanf(in, "%d :%lg", &x, &y) != 2){
 				printf("FILE_FORMAT_ERR\n");
-				remove( "tmp" );
+				remove( "5zuk4j2022_tmpfile" );
 				exit( FILE_FORMAT_ERR );
 			}
 			if(y > max)
@@ -214,7 +214,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
         }    
 
 	fclose(in);
-        remove("tmp");
+        remove("5zuk4j2022_tmpfile");
 	
         graph->head = nodes_tmp[0];
 

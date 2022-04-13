@@ -1,0 +1,29 @@
+Z plikami wejściowymi z grafem:
+
+./szukaj -f 0 -t 24 -i pliki_testowe/mygraph
+./szukaj -f 0 -t 24 -i pliki_testowe/test1_1
+./szukaj -f 2 -t 7 -i pliki_testowe/test1_1
+./szukaj -f 2 -t 7 -i pliki_testowe/test1_2
+./szukaj -f 2 -t 7 -i pliki_testowe/test1_3
+./szukaj -f 2 -t 7 -i pliki_testowe/test1_4
+./szukaj -f 2 -t 7 -i pliki_testowe/test1_5
+./szukaj -f 2 -t 7 -i pliki_testowe/test2_1
+./szukaj -f 2 -t 5 -i pliki_testowe/test2_1
+./szukaj -f 2 -t 5 -i pliki_testowe/test2_2
+./szukaj -f 2 -t 5 -i pliki_testowe/test2_3
+./szukaj -f 2 -t 5 -i pliki_testowe/test3_1
+./szukaj -f 0 -t 1 -i pliki_testowe/test3_1
+./szukaj -f 1 -t 0 -i pliki_testowe/test3_1
+./szukaj -f 1 -t 0 -i pliki_testowe/test3_2
+./szukaj -f 0 -t 1 -i pliki_testowe/test3_2
+./szukaj -f 0 -t 1 -i pliki_testowe/test4
+./szukaj -i pliki_testowe/test1_1
+
+Bez pliku z grafem:
+
+./szukaj -f 1 -t 5 -x 3 -y 3 -a 2 -b 8 -o pliki_potestach/test1
+./szukaj -f 1 -t 5 -x 3 -y 3 -a 2 -b 3 -o pliki_potestach/test1
+./szukaj -f 1 -t 3 -x 1 -y 5 -a 2 -b 8 -o pliki_potestach/test2
+./szukaj -f 0 -t 1 -x 1 -y 2 -a 2 -b 8 -o pliki_potestach/test3
+./szukaj -f 0 -t 1 -x 2 -y 1 -a 2 -b 8 -o pliki_potestach/test4
+./szukaj -x 10 -y 10 -a 0 -b 9 -o pliki_potestach/plik.txt

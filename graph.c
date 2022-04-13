@@ -149,6 +149,7 @@ void commaToDott(FILE *in) {
 double readFromFile( graph_t *graph, FILE *in ) {
 	int gsize, x, i, j, k, maxw=4;
         double y, max = 0;
+	char c;
 
 	commaToDott(in);
 
@@ -184,7 +185,11 @@ double readFromFile( graph_t *graph, FILE *in ) {
         for(i=0; i<gsize; i++){
                 k = 0;
     
-                while((fgetc(in) != '\n') && (k<maxw)){
+                while(((c = fgetc(in)) != '\n') && (k<maxw)){
+			if(c == EOF){
+				printf("INPUT_NODE\n");
+				exit( INPUT_NODE );
+			}
                         if(fscanf(in, "%d :%lg", &x, &y) != 2){
 				printf("FILE_FORMAT_ERR\n");
 				remove( "tmp" );

@@ -98,6 +98,12 @@ int main( int argc, char *argv[] ) {
 	return INCORRECT_NUMBER_OF_ARGS;
     }
 
+    if( out == NULL ) {
+	up = readFromFile(&graph, in);//wczytaj graf z pliku
+	width = graph.width;
+	len = graph.len;
+    }
+	
     if( width < 0 || len < 0 || down < 0 || up < 0 ) { //sprawdzenie poprawnosci podanych danych
 	fprintf( stderr, "NOT_POSITIVE_NB \n");
 	return NOT_POSITIVE_NB;
@@ -113,9 +119,6 @@ int main( int argc, char *argv[] ) {
 	printToFile( graph, out );
 	fclose( out );
     }
-    if( out == NULL ) {
-	up = readFromFile(&graph, in);//wczytaj graf z pliku
-    }
 
     if( checkIntegrity( graph ) )
 	    printf( "Graf jest spojny\n" );
@@ -124,6 +127,7 @@ int main( int argc, char *argv[] ) {
             exit( NO_INCOHERENT );
     }   
 
+    printf("\n");
     writeGraph(&graph, stdout);
     printf("\n");
 

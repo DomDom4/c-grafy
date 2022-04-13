@@ -6,6 +6,8 @@
 #include "error.h"
 #include "graph.h"
 
+#define DEFAULT_FROM 0
+#define DEFAULT_TO 1
 #define DEFAULT_WIDTH 10
 #define DEFAULT_LENGHT 10
 #define DEFAULT_DOWN 0
@@ -22,7 +24,9 @@
 #define IN_FILE 'i'
 
 int main( int argc, char *argv[] ) {
-    int opt, from, to;
+    int opt;
+    int from = DEFAULT_FROM;
+    int to = DEFAULT_TO;
     int width = DEFAULT_WIDTH;
     int len = DEFAULT_LENGHT; 
     double down = DEFAULT_DOWN;

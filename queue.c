@@ -18,9 +18,9 @@ void addToQueue( q_t *q, node_t n ) { //q - glowa kolejki
 }
 
 node_t popFromQueue( q_t *q ) { 
-    if( *q == NULL ) {
+    if( *q == NULL ) 
         return NULL;
-    }   
+	
     node_t show = (*q)->node;
     q_t temp = *q; 
     *q = (*q)->next;
@@ -49,25 +49,20 @@ void freeQueue( q_t q ) {
 }
 
 q_t priorityQueue( graph_t *graph, node_t n ) { 
-        q_t head=NULL, temp=NULL;
-        int i, gsize = graph->width*graph->len;
+    q_t temp = NULL, checked = NULL;
+    node_t head = n;
+    int i;
+    addToQueue( &temp, head );
+    while( temp != NULL ) { 
+        for( i= 0; i < head->ways; i++ ) 
+            if( !inQueue( temp, head->conn[i]->id ) && !inQueue( checked, head->conn[i]->id ) ) 
+                addToQueue( &temp, head->conn[i] );
+        addToQueue( &checked, popFromQueue( &temp ) );
+        if( temp != NULL )
+            head = temp->node;
+    }   
 
-        addToQueue( &head, n);
-        temp = head;
-
-        while(gsize>0){
-                for(i=0; i<temp->node->ways; i++){
-                        if(!inQueue(head, temp->node->conn[i]->id))
-                                addToQueue( &head, temp->node->conn[i] );
-                }
-                temp = temp->next;
-                gsize--;
-        }
-
-        freeQueue( temp );
-
-        return head;
-
+    return checked; 
 }
 
 void writeQueue(q_t q, int n) {

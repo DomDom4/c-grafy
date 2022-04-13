@@ -297,6 +297,8 @@ void writeGraph(graph_t *graph, FILE *out){
 
         node_t n = graph->head, tmp = NULL, tmp2, tmp3;
 
+	g = gsize-1 == 0 ? 1 : gsize-1;
+	
         while(g>0){
                 ti++;
                 g/=10;

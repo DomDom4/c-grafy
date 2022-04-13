@@ -133,16 +133,21 @@ int main( int argc, char *argv[] ) {
 
     printf("\n");
     writeGraph(&graph, stdout);
-    printf("\n");
+    printf("\nSciezka: ");
 
-    path p = findPath(&graph, from, to, up);//znajdz droge
+    if(from != to){
+    	path p = findPath(&graph, from, to, up);//znajdz droge
 
-    int i;
-    for(i=0; i<p->n_nb-1; i++)
-	    printf("%d -> ", p->nodes[i]->id);
-    printf("%d", p->nodes[p->n_nb-1]->id);
+	int i;
+    	for(i=0; i<p->n_nb-1; i++)
+            printf("%d -> ", p->nodes[i]->id);
+    	printf("%d", p->nodes[p->n_nb-1]->id);
 
-    printf("\nDlugosc sciezki: %lf\n", p->val_s);
+    	printf("\nDlugosc sciezki: %lf\n", p->val_s);
+    } else {
+	printf("%d", from);
+    	printf("\nDlugosc sciezki: 0\n");
+    }
 
     freeGraph( graph );
 

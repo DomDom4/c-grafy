@@ -15,6 +15,8 @@
 #define NO_NODE 12
 #define FILE_FORMAT_ERR 13
 #define EMPTY_QUEUE 14
+#define NO_GRAPH 15
+#define INCORRECT_NB_OF_GRAPHS 16
 
 #define FILENAME_TAKEN -1
 

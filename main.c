@@ -173,6 +173,6 @@ int main( int argc, char *argv[] ) {
     }
 
     for(i=0; i<graph.n; i++)
-	freeGraph( graph );
+	freeGraph( graph, i );
 
 }

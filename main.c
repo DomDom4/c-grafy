@@ -20,6 +20,7 @@
 #define LENGHT 'y'
 #define DOWN 'a'
 #define UP 'b'
+#define NB_GRAPHS 'n'
 #define OUT_FILE 'o'
 #define IN_FILE 'i'
 
@@ -28,7 +29,8 @@ int main( int argc, char *argv[] ) {
     int from = DEFAULT_FROM;
     int to = DEFAULT_TO;
     int width = DEFAULT_WIDTH;
-    int len = DEFAULT_LENGHT; 
+    int len = DEFAULT_LENGHT;
+    int n = DEFAULT_NB_OF_GRAPHS;
     double down = DEFAULT_DOWN;
     double up = DEFAULT_UP;	
     FILE *in = NULL, *out = NULL;
@@ -54,6 +56,8 @@ int main( int argc, char *argv[] ) {
 	    case UP:
 		up = atoi( optarg );
 		break;
+	    case NB_GRAPHS:
+                n = atoi( optarg );
 	    case OUT_FILE:
 		if( !access( optarg, F_OK ) ) {
 		    printf( "FILENAME_TAKEN: %s\n", optarg );
@@ -104,8 +108,8 @@ int main( int argc, char *argv[] ) {
 
     if( out == NULL ) {
 	up = readFromFile(&graph, in);//wczytaj graf z pliku
-	width = graph.width;
-	len = graph.len;
+	width = graph.width[0];
+	len = graph.len[0];
     }
 	
     if( width < 0 || len < 0 || down < 0 || up < 0 ) { //sprawdzenie poprawnosci podanych danych
@@ -124,21 +128,40 @@ int main( int argc, char *argv[] ) {
 	fclose( out );
     }
 
-    if( checkIntegrity( graph ) )
+    if( checkIntegrity( graph, 0 ) )
 	    printf( "Graf jest spojny\n" );
     else {
 	    printf("Graf nie jest spojny\n");
             exit( NO_INCOHERENT );
     }   
 
-    printf("\n");
-    writeGraph(&graph, stdout);
+    printf("\nGraf początkowy:\n");
+
+    writeGraph(&graph, stdout, 0);
+        printf("\n");
+	
+    int i;
+
+    if(n < 0 || n > width){
+        printf("INCORRECT_NB_OF_GRAPHS\n");
+        exit( INCORRECT_NB_OF_GRAPHS );
+    } else {
+            if(n > 0){
+                divideGraph(&graph, n);
+
+                for(i=0; i<graph.n; i++){
+                        printf("Graf %d:\n", i+1);
+                        writeGraph(&graph, stdout, i);
+                        printf("\n");
+                }
+        }
+    }
+
     printf("\nSciezka: ");
 
     if(from != to){
     	path p = findPath(&graph, from, to, up);//znajdz droge
 
-	int i;
     	for(i=0; i<p->n_nb-1; i++)
             printf("%d -> ", p->nodes[i]->id);
     	printf("%d", p->nodes[p->n_nb-1]->id);
@@ -149,6 +172,7 @@ int main( int argc, char *argv[] ) {
     	printf("\nDlugosc sciezki: 0\n");
     }
 
-    freeGraph( graph );
+    for(i=0; i<graph.n; i++)
+	freeGraph( graph );
 
 }

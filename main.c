@@ -146,7 +146,7 @@ int main( int argc, char *argv[] ) {
         printf("INCORRECT_NB_OF_GRAPHS\n");
         exit( INCORRECT_NB_OF_GRAPHS );
     } else {
-            if(n > 0){
+            if(n > 1){
                 divideGraph(&graph, n);
 
                 for(i=0; i<graph.n; i++){

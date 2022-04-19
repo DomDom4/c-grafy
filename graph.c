@@ -675,3 +675,8 @@ void freeGraph( graph_t graph, int nn ) {
    
     free( nodes );
 }
+
+void freePath( path p ) {
+    free( p->nodes );
+    free( p );
+}

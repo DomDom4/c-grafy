@@ -65,4 +65,6 @@ void infinity(double *d, int s, double n);
 
 void null(node_t *t, int n); 
 
+void freePath( path p );
+
 #endif

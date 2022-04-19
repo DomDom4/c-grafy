@@ -155,6 +155,7 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
         free(p);
         free(temp);
         free(d);
+	freeQueue( Q );
 
         return dp;
 }

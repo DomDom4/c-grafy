@@ -167,6 +167,7 @@ int main( int argc, char *argv[] ) {
     	printf("%d", p->nodes[p->n_nb-1]->id);
 
     	printf("\nLenght: %lf\n", p->val_s);
+	freePath( p );
     } else {
 	printf("%d", from);
     	printf("\nLenght: 0\n");

@@ -272,43 +272,7 @@ node_t findNode(graph_t *graph, int n, int nn) {
         printf("NO_NODE - %d\n", n);
         exit(NO_NODE);
 }
-/*
-void printToFile( graph_t graph, FILE *out ) {
-    
-    int i, j, nodown, noright, down, right;
-    node_t temp, head = graph.head[0];
-    fprintf( out, "%d %d\n", graph.width[0], graph.len[0] );
-    while( 1 ) {
-	nodown = 1;
-	down = head->id + graph.width[0];
-	temp = head;
-	for( i= 0; i < head->ways; i++ ) { 
-	    if( head->conn[i]->id == down ) {
-		nodown = 0;
-		break;
-	    }
-	}
-	while( 1 ) {
-	    noright = 1;
-	    right = temp->id + 1;
-	    for( j= 0; j < temp->ways; j++ ) 
-		fprintf( out, "\t%d :%lf ", temp->conn[j]->id, temp->val[j] );
-	    fprintf( out, "\n" );
-	    for( j= 0; j < temp->ways; j++ ) 
-		if( temp->conn[j]->id == right ) {
-		    noright = 0;
-		    break;
-		}
-	    if( noright || right == down ) 
-		break;
-	    temp = temp->conn[j]; 
-	}
-	if( nodown ) 
-	    break;
-	head = head->conn[i]; 	
-    }
-}
-*/
+
 void printToFile( graph_t graph, FILE *out ) {
     int i, j, width = 0, len = graph.len[0], currGraph = 0, down, isdown, right, isright;
     node_t *nodes, head, tempdown, tempright;

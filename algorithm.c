@@ -4,7 +4,7 @@
 
 int checkIntegrity( graph_t graph, int nn ) { //BFS
     q_t temp, working = NULL, checked = NULL;
-    node_t head = graph.head;
+    node_t head = graph.head[nn];
     int i, count = 0, nodes = graph.width[nn]*graph.len[nn];
     addToQueue( &working, head );
     while( working != NULL ) { 
@@ -83,7 +83,7 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
         node_t *p = malloc(gsize *sizeof(node_t));
         node_t *temp = malloc(gsize *sizeof(node_t));
 
-        node_t c = findNode(graph, start, );
+        node_t c = findNode(graph, start, n);
         path dp = malloc(sizeof(path));
 
 	if((Q == NULL) || (d == NULL) || (p == NULL) || (temp == NULL) || (dp == NULL)){
@@ -91,7 +91,7 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
                 exit( NOT_ENOUGH_MEMORY );
         }
 	
-        Q = priorityQueue(graph, c); 
+        Q = priorityQueue(c); 
         //writeQueue(Q, gsize);
 
         infinity(d, gsize, maxval);

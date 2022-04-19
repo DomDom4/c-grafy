@@ -2,10 +2,13 @@
 #include "queue.h"
 #include "error.h"
 
-int checkIntegrity( graph_t graph, int nn ) { //BFS
+int checkIntegrity( graph_t graph ) { //BFS
     q_t temp, working = NULL, checked = NULL;
-    node_t head = graph.head[nn];
-    int i, count = 0, nodes = graph.width[nn]*graph.len[nn];
+    node_t head = graph.head[0];
+    int i, count = 0, nodes, width = 0;
+    for( i= 0; i < graph.n; i++ )
+	width+= graph.width[i];
+    nodes = width * graph.len[0];
     addToQueue( &working, head );
     while( working != NULL ) { 
         for( i= 0; i < head->ways; i++ ) 

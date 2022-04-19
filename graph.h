@@ -41,7 +41,7 @@ node_t findNode(graph_t *graph, int n, int nn );
 
 void freeGraph( graph_t graph, int nn );
 
-int checkIntegrity( graph_t graph, int nn ); //BFS
+int checkIntegrity( graph_t graph ); //BFS
 
 path findPath( graph_t *graph, int start, int end, double maxval ); //Dijsktra
 

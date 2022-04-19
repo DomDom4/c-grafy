@@ -272,8 +272,9 @@ node_t findNode(graph_t *graph, int n, int nn) {
         printf("NO_NODE - %d\n", n);
         exit(NO_NODE);
 }
-
+/*
 void printToFile( graph_t graph, FILE *out ) {
+    
     int i, j, nodown, noright, down, right;
     node_t temp, head = graph.head[0];
     fprintf( out, "%d %d\n", graph.width[0], graph.len[0] );
@@ -305,6 +306,54 @@ void printToFile( graph_t graph, FILE *out ) {
 	if( nodown ) 
 	    break;
 	head = head->conn[i]; 	
+    }
+}
+*/
+void printToFile( graph_t graph, FILE *out ) {
+    int i, j, width = 0, len = graph.len[0], currGraph = 0, down, isdown, right, isright;
+    node_t *nodes, head, tempdown, tempright;
+    for( i= 0; i < graph.n; i++ ) {
+	width+= graph.width[i];
+    }
+    nodes = malloc( len * width * sizeof *nodes );
+    fprintf( out, "%d %d\n", width, len );
+    while( currGraph < graph.n ) {
+	head = graph.head[currGraph];
+	while( head != NULL ) {
+	    down = head->id + graph.width[currGraph];
+	    isdown = 0;
+	    for( i= 0; i < head->ways; i++ ) { 
+		if( head->conn[i]->id == down ) {
+		    isdown = 1;
+		    break;
+		}
+	    }
+	    if( isdown ) 
+		tempdown = head->conn[i]; 
+	    else 
+		tempdown = NULL; 
+	    while( head != NULL ) {
+		right = head->id + 1;
+		isright = 0;
+		for( j= 0; j < head->ways; j++ ) 
+		    if( head->conn[j]->id == right ) {
+			isright = 1;
+			break;
+		    }
+		nodes[head->id] = head;
+		if( graph.width[currGraph] > 1 && isright ) 
+		    head = head->conn[j]; 
+		else 
+		    head = NULL; 
+	    }
+	    head = tempdown;     
+	}
+	currGraph++;
+    }
+    for( i= 0; i < len * width; i++ ) {
+	for( j= 0; j < nodes[i]->ways; j++ )
+	    fprintf( out, "\t%d: %lf", nodes[i]->conn[j]->id, nodes[i]->val[j] );
+	fprintf( out, "\n" );
     }
 }
 

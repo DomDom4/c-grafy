@@ -129,13 +129,13 @@ int main( int argc, char *argv[] ) {
     }
 
     if( checkIntegrity( graph, 0 ) )
-	    printf( "Graf jest spojny\n" );
+	    printf( "Graf is connected\n" );
     else {
-	    printf("Graf nie jest spojny\n");
+	    printf("Graf is not connected\n");
             exit( NO_INCOHERENT );
     }   
 
-    printf("\nGraf początkowy:\n");
+    printf("\nStarting graph:\n");
 
     writeGraph(&graph, stdout, 0);
         printf("\n");
@@ -150,14 +150,14 @@ int main( int argc, char *argv[] ) {
                 divideGraph(&graph, n);
 
                 for(i=0; i<graph.n; i++){
-                        printf("Graf %d:\n", i+1);
+                        printf("Graph %d:\n", i+1);
                         writeGraph(&graph, stdout, i);
                         printf("\n");
                 }
         }
     }
 
-    printf("\nSciezka: ");
+    printf("\nPath: ");
 
     if(from != to){
     	path p = findPath(&graph, from, to, up);//znajdz droge
@@ -166,10 +166,10 @@ int main( int argc, char *argv[] ) {
             printf("%d -> ", p->nodes[i]->id);
     	printf("%d", p->nodes[p->n_nb-1]->id);
 
-    	printf("\nDlugosc sciezki: %lf\n", p->val_s);
+    	printf("\nLenght: %lf\n", p->val_s);
     } else {
 	printf("%d", from);
-    	printf("\nDlugosc sciezki: 0\n");
+    	printf("\nLenght: 0\n");
     }
 
     for(i=0; i<graph.n; i++)

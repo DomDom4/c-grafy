@@ -147,9 +147,10 @@ int main( int argc, char *argv[] ) {
                 }
         }
     }
-
-    printToFile( graph, out );
-    fclose( out );
+    if( in == NULL ) {
+	printToFile( graph, out );
+	fclose( out );
+    }
 
     if( checkIntegrity( graph ) )
 	printf( "Graf is connected\n" );

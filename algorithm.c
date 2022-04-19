@@ -5,7 +5,7 @@
 int checkIntegrity( graph_t graph, int nn ) { //BFS
     q_t temp, working = NULL, checked = NULL;
     node_t head = graph.head;
-    int i, count = 0, nodes = graph.width[nn]*graph.len;
+    int i, count = 0, nodes = graph.width[nn]*graph.len[nn];
     addToQueue( &working, head );
     while( working != NULL ) { 
         for( i= 0; i < head->ways; i++ ) 

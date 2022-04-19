@@ -48,7 +48,7 @@ void freeQueue( q_t q ) {
     }
 }
 
-q_t priorityQueue( graph_t *graph, node_t n ) { 
+q_t priorityQueue( node_t n ) { 
     q_t temp = NULL, checked = NULL;
     node_t head = n;
     int i;

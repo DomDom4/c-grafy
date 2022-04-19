@@ -16,7 +16,7 @@ node_t popFromQueue( q_t *q );
 
 int inQueue( q_t q, int value );
 
-q_t priorityQueue( graph_t *graph, node_t n );
+q_t priorityQueue( node_t n );
 
 void writeQueue(q_t q, int n); 
 

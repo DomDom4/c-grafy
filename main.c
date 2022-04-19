@@ -125,16 +125,7 @@ int main( int argc, char *argv[] ) {
 
     if( in == NULL ) {
 	graph = genFromParams( width, len, down, up );
-	printToFile( graph, out );
-	fclose( out );
     }
-
-    if( checkIntegrity( graph, 0 ) )
-	    printf( "Graf is connected\n" );
-    else {
-	    printf("Graf is not connected\n");
-            exit( NO_INCOHERENT );
-    }   
 
     printf("\nStarting graph:\n");
 
@@ -149,7 +140,6 @@ int main( int argc, char *argv[] ) {
     } else {
             if(n > 1){
                 divideGraph(&graph, n);
-
                 for(i=0; i<graph.n; i++){
                         printf("Graph %d:\n", i+1);
                         writeGraph(&graph, stdout, i);
@@ -157,6 +147,14 @@ int main( int argc, char *argv[] ) {
                 }
         }
     }
+
+    printToFile( graph, out );
+    fclose( out );
+
+    if( checkIntegrity( graph ) )
+	printf( "Graf is connected\n" );
+    else 
+	printf("Graf is not connected\n");
 
     printf("\nPath: ");
 

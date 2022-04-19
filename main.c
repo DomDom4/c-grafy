@@ -58,6 +58,7 @@ int main( int argc, char *argv[] ) {
 		break;
 	    case NB_GRAPHS:
                 n = atoi( optarg );
+		break;
 	    case OUT_FILE:
 		if( !access( optarg, F_OK ) ) {
 		    printf( "FILENAME_TAKEN: %s\n", optarg );

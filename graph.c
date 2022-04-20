@@ -175,6 +175,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 	
         if(fscanf(in, "%d %d", &len, &width) != 2){
                 printf("FILE_FORMAT_ERR\n");
+		fclose( in );
 		remove( "5zuk4j2022_tmpfile" );
                 exit( FILE_FORMAT_ERR );
         }
@@ -194,6 +195,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
 	if((nodes_tmp == NULL) || (conn_tmp == NULL) || (val_tmp == NULL)){
                 printf("NOT_ENOUGH_MEMORY\n");
+		fclose( in );
 		remove( "5zuk4j2022_tmpfile" );
                 exit( NOT_ENOUGH_MEMORY );
         }
@@ -208,6 +210,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 			}
                         if(fscanf(in, "%d :%lg", &x, &y) != 2){
 				printf("FILE_FORMAT_ERR\n");
+				fclose( in );
 				remove( "5zuk4j2022_tmpfile" );
 				exit( FILE_FORMAT_ERR );
 			}
@@ -240,6 +243,9 @@ double readFromFile( graph_t *graph, FILE *in ) {
         }
 
 
+        for(i=0; i<gsize; i++){
+                free( conn_tmp[i] );
+        }
         free(conn_tmp);
         free(val_tmp);
         free(nodes_tmp);

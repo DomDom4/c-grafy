@@ -249,6 +249,7 @@ double readFromFile( graph_t *graph, FILE *in ) {
 
 node_t findNode(graph_t *graph, int n, int nn) {
         q_t head=NULL, temp=NULL;
+	node_t found = NULL;
         int i, gsize = graph->width[nn]*graph->len[nn];
 
         addToQueue(&head, graph->head[nn]);
@@ -257,17 +258,20 @@ node_t findNode(graph_t *graph, int n, int nn) {
         while(gsize>0){
                 for(i=0; i<temp->node->ways; i++){
                         if(temp->node->conn[i]->id == n){
-                                return temp->node->conn[i];
+                                found = temp->node->conn[i];
+				break;
                         }
                         if(!inQueue(head, temp->node->conn[i]->id))
                                 addToQueue(&head, temp->node->conn[i]);
                 }
+		if( found != NULL )
+		    break;
                 temp = temp->next;
                 gsize--;
         }
 
-        freeQueue( temp );
         freeQueue( head );
+	return found;
 
         printf("NO_NODE - %d\n", n);
         exit(NO_NODE);
@@ -319,6 +323,7 @@ void printToFile( graph_t graph, FILE *out ) {
 	    fprintf( out, "\t%d: %lf", nodes[i]->conn[j]->id, nodes[i]->val[j] );
 	fprintf( out, "\n" );
     }
+    free( nodes );
 }
 
 void divideGraph(graph_t *graph, int n) {
@@ -628,52 +633,56 @@ int findConnIndex(node_t node, int a) {
         return -1;
 }
 
-
-void freeGraph( graph_t graph, int nn ) {
-    node_t tempdown, head = graph.head[nn];
-    node_t *nodes = malloc( graph.width[nn]*graph.len[nn] * sizeof *nodes );
-    int i, j, isdown, isright, down, right, nodecount = 0;
-    graph.head[nn] = NULL;
-    while( head != NULL ) {
-
-	down = head->id + graph.width[nn];
-	isdown = 0;
-	for( i= 0; i < head->ways; i++ ) { 
-	    if( head->conn[i]->id == down ) {
-		isdown = 1;
-		break;
-	    }
-	}
-	
-	if( isdown ) 
-	    tempdown = head->conn[i]; 
-	else 
-	    tempdown = NULL; 
-
+void freeGraph( graph_t graph ) {
+    int i, j, len = graph.len[0], width = 0, currGraph= 0;
+    int isdown, isright, down, right;
+    for( i= 0; i < graph.n; i++ )
+	width+= graph.width[i];
+    node_t head, tempdown, tempright;
+    node_t *nodes = malloc( len*width * sizeof *nodes );
+    while( currGraph < graph.n ) {
+	head = graph.head[currGraph];
 	while( head != NULL ) {
-	    
-	    right = head->id + 1;
-	    isright = 0;
-	    for( j= 0; j < head->ways; j++ ) 
-		if( head->conn[j]->id == right ) {
-		    isright = 1;
+	    down = head->id + graph.width[currGraph];
+	    isdown = 0;
+	    for( i= 0; i < head->ways; i++ ) { 
+		if( head->conn[i]->id == down ) {
+		    isdown = 1;
 		    break;
 		}
-
-	    nodes[nodecount] = head;
-	    nodecount++;
-
-	    if( graph.width[nn] > 1 && isright ) 
-		head = head->conn[j]; 
+	    }
+	    if( isdown ) 
+		tempdown = head->conn[i]; 
 	    else 
-		head = NULL; 
+		tempdown = NULL; 
+	    while( head != NULL ) {
+		right = head->id + 1;
+		isright = 0;
+		for( j= 0; j < head->ways; j++ ) 
+		    if( head->conn[j]->id == right ) {
+			isright = 1;
+			break;
+		    }
+		nodes[head->id] = head;
+		if( graph.width[currGraph] > 1 && isright ) 
+		    head = head->conn[j]; 
+		else 
+		    head = NULL; 
+	    }
+	    head = tempdown;     
 	}
-	head = tempdown;     
+	currGraph++;
     }
-    for( i= 0; i < nodecount; i++ ) 
+    for( i= 0; i < len*width; i++ ) {
+	free( nodes[i]->conn );
+	free( nodes[i]->val );
 	free( nodes[i] );
-   
+    }
     free( nodes );
+    free( graph.head );
+    free( graph.width );
+    free( graph.len );
+
 }
 
 void freePath( path p ) {

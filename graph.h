@@ -39,7 +39,7 @@ void printToFile( graph_t graph, FILE *out ); //Zapisanie do pliku
 
 node_t findNode(graph_t *graph, int n, int nn );
 
-void freeGraph( graph_t graph, int nn );
+void freeGraph( graph_t graph );
 
 int checkIntegrity( graph_t graph ); //BFS
 

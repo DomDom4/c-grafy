@@ -25,7 +25,7 @@
 #define IN_FILE 'i'
 
 int main( int argc, char *argv[] ) {
-    int opt;
+    int opt, i;
     int from = DEFAULT_FROM;
     int to = DEFAULT_TO;
     int width = DEFAULT_WIDTH;
@@ -128,11 +128,10 @@ int main( int argc, char *argv[] ) {
     }
 
     printf("\nStarting graph:\n");
-
-    writeGraph(&graph, stdout, 0);
+    if( checkIntegrity( graph ) ) {
+	writeGraph(&graph, stdout, 0);
         printf("\n");
-	
-    int i;
+    }
 
     if(n < 0 || n > width){
         printf("INCORRECT_NB_OF_GRAPHS\n");
@@ -173,7 +172,6 @@ int main( int argc, char *argv[] ) {
     	printf("\nLenght: 0\n");
     }
 
-    for(i=0; i<graph.n; i++)
-	freeGraph( graph, i );
+    freeGraph( graph );
 
 }

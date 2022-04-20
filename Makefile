@@ -69,4 +69,4 @@ gen_7x7_5grafow: #graf 7x7 podzielony na 5 grafow
 
 
 clean:
-	-rm *.o szukaj pliki_potestach/test* || true
+	-rm *.o szukaj pliki_potestach/test* 

@@ -152,9 +152,9 @@ int main( int argc, char *argv[] ) {
     }
 
     if( checkIntegrity( graph ) )
-	printf( "Graf is connected\n" );
+	printf( "Graph is connected\n" );
     else 
-	printf("Graf is not connected\n");
+	printf("Graph is not connected\n");
 
     printf("\nPath: ");
 

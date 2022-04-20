@@ -6,7 +6,7 @@ test: clean szukaj test_plik test_gen
 
 test_gen: gen_3x3 gen_1x5 gen_1x2 gen_2x1 gen_10x10_bez_ft gen_3x3_2grafy gen_3x3_3grafy gen_7x7_5grafow
 
-test_plik: plik_3x3 plik_3x3_skierowany plik_3x3_przecinki plik_3x3_err_sciezka plik_1x7 plik_1x2 plik_niespojny plik_3x3_bez_ft plik_mygraph
+test_plik: plik_3x3 plik_3x3_skierowany plik_3x3_przecinki plik_3x3_err_sciezka plik_niespojny plik_3x3_bez_ft plik_mygraph
 
 #Grafy z pliku:
 
@@ -22,14 +22,8 @@ plik_3x3_przecinki: #z pliku graf 3x3 z przecinkami zamiast kropek w liczbach
 plik_3x3_err_sciezka: #z pliku graf 3x3, sciezka do wezła, ktory nie istnieje
 	-./szukaj -f 0 -t 24 -i pliki_testowe/test1_1
 
-plik_1x7: #z pliku graf o szerkosci 1
-	./szukaj -f 2 -t 5 -i pliki_testowe/test2_1
-
-plik_1x2: #z pliku graf o jednej krawedzi
-	./szukaj -f 0 -t 1 -i pliki_testowe/test3_1
-
 plik_niespojny: #z pliku graf niespojny
-	./szukaj -f 2 -t 7 -i pliki_testowe/test4
+	-./szukaj -f 2 -t 7 -i pliki_testowe/test4
 
 plik_3x3_bez_ft: #z pliku graf z testu 1. bez wyznczonego poczatku i konca sciezki
 	./szukaj -i pliki_testowe/test1_1

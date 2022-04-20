@@ -115,7 +115,7 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
                 }
                 Qd--;
         }
-  
+ 
 /*       -- Sprawdzenie przejść --
 
         int tmp = end;

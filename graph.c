@@ -652,7 +652,7 @@ void freeGraph( graph_t graph ) {
 	    down = head->id + graph.width[currGraph];
 	    isdown = 0;
 	    for( i= 0; i < head->ways; i++ ) { 
-		if( head->conn[i]->id == down ) {
+		if( head->conn[i]->id == down && len != 1 ) {
 		    isdown = 1;
 		    break;
 		}
@@ -665,7 +665,7 @@ void freeGraph( graph_t graph ) {
 		right = head->id + 1;
 		isright = 0;
 		for( j= 0; j < head->ways; j++ ) 
-		    if( head->conn[j]->id == right ) {
+		    if( head->conn[j]->id == right && width != 1 ) {
 			isright = 1;
 			break;
 		    }

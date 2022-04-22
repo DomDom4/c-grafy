@@ -133,7 +133,7 @@ graph_t genFromParams( int width, int len, double a, double b ) {
 }
 
 node_t fileMakeNode( int ways ) { //funkcja pomocnicza do funkcji generujacej
-    node_t nd = malloc( sizeof nd + ways * sizeof nd->val + ways * sizeof nd->conn );
+    node_t nd = malloc( sizeof *nd );
     nd->conn = malloc( ways * sizeof nd->conn );
     nd->val = malloc( ways * sizeof nd->val );
     if( nd->conn == NULL || nd->val == NULL || nd == NULL ) {
@@ -294,7 +294,7 @@ void printToFile( graph_t graph, FILE *out ) {
     while( currGraph < graph.n ) {
 	head = graph.head[currGraph];
 	while( head != NULL ) {
-	    down = head->id + graph.width[currGraph];
+	    down = head->id + width;
 	    isdown = 0;
 	    for( i= 0; i < head->ways; i++ ) { 
 		if( head->conn[i]->id == down ) {
@@ -649,7 +649,7 @@ void freeGraph( graph_t graph ) {
     while( currGraph < graph.n ) {
 	head = graph.head[currGraph];
 	while( head != NULL ) {
-	    down = head->id + graph.width[currGraph];
+	    down = head->id + width;
 	    isdown = 0;
 	    for( i= 0; i < head->ways; i++ ) { 
 		if( head->conn[i]->id == down && len != 1 ) {

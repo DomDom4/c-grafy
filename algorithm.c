@@ -56,7 +56,7 @@ int pathExistence(graph_t *graph, int a, int b, int n, int gwidth){
 path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
 	int i, n = -1, gwidth = 0;
 
-       for(i=0; i<graph->n; i++){
+	for(i=0; i<graph->n; i++){
                 gwidth += graph->width[i];
         }
 
@@ -77,8 +77,8 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
 	}
 
         int gsize = gwidth * graph->len[0], ngsize = graph->width[n] * graph->len[n], k = 0;
-
-        q_t Q = malloc(ngsize *sizeof(node_t));
+	
+	q_t Q = NULL;
 
         int Qd = ngsize;
 	
@@ -89,13 +89,12 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
         node_t c = findNode(graph, start, n);
 	path dp = malloc( sizeof *dp );
 
-	if((Q == NULL) || (d == NULL) || (p == NULL) || (temp == NULL) || (dp == NULL)){
+	if((d == NULL) || (p == NULL) || (temp == NULL) || (dp == NULL)){
                 printf("NOT_ENOUGH_MEMORY\n");
                 exit( NOT_ENOUGH_MEMORY );
         }
 	
         Q = priorityQueue(c); 
-        //writeQueue(Q, gsize);
 	
         infinity(d, gsize, maxval);
         null(p, gsize);
@@ -106,7 +105,6 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
                 if((c = popFromQueue(&Q)) == NULL){
                         break;
                 }
-                //printf("%d -> ", c->id);
                 for(i=0; i<c->ways; i++){
                         if(d[c->conn[i]->id] > d[c->id]+c->val[i]){
                                 d[c->conn[i]->id] = d[c->id] + c->val[i];
@@ -116,19 +114,6 @@ path findPath( graph_t *graph, int start, int end, double maxval ) { //Dijsktra
                 Qd--;
         }
  
-/*       -- Sprawdzenie przejść --
-
-        int tmp = end;
-        printf("\nPrzejscia od ostatniego: ");
-        while(tmp != start){
-                printf("%d <- ", tmp);
-                tmp = p[tmp]->id;
-        }
-        printf("%d; ", tmp);
-
-	printf("Suma wag przejsc: %lf\n", d[end]);
-*/
-
         dp->val_s = d[end];
 
         temp[k] = findNode(graph, end, n);

@@ -25,7 +25,7 @@
 #define IN_FILE 'i'
 
 int main( int argc, char *argv[] ) {
-    int opt, i;
+    int opt, i, integral;
     int from = DEFAULT_FROM;
     int to = DEFAULT_TO;
     int width = DEFAULT_WIDTH;
@@ -127,8 +127,10 @@ int main( int argc, char *argv[] ) {
 	graph = genFromParams( width, len, down, up );
     }
 
+    integral = checkIntegrity( graph );
+
     printf("\nStarting graph:\n");
-    if( checkIntegrity( graph ) && (width < 20 && len < 20) ) {
+    if( integral && (width < 20 && len < 20) ) {
 	writeGraph(&graph, stdout, 0);
         printf("\n");
     }
@@ -139,6 +141,7 @@ int main( int argc, char *argv[] ) {
     } else {
             if(n > 1){
                 divideGraph(&graph, n);
+		integral = 0;
 		if(len < 20){
 	                for(i=0; i<graph.n; i++){
         	                printf("Graph %d:\n", i+1);
@@ -153,7 +156,7 @@ int main( int argc, char *argv[] ) {
 	fclose( out );
     }
 
-    if( checkIntegrity( graph ) )
+    if( integral )
 	printf( "Graph is connected\n" );
     else 
 	printf("Graph is not connected\n");
@@ -175,5 +178,4 @@ int main( int argc, char *argv[] ) {
     }
 
     freeGraph( graph );
-
 }

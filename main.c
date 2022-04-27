@@ -128,7 +128,7 @@ int main( int argc, char *argv[] ) {
     }
 
     printf("\nStarting graph:\n");
-    if( checkIntegrity( graph ) ) {
+    if( checkIntegrity( graph ) && (width < 20 && len < 20) ) {
 	writeGraph(&graph, stdout, 0);
         printf("\n");
     }
@@ -139,11 +139,13 @@ int main( int argc, char *argv[] ) {
     } else {
             if(n > 1){
                 divideGraph(&graph, n);
-                for(i=0; i<graph.n; i++){
-                        printf("Graph %d:\n", i+1);
-                        writeGraph(&graph, stdout, i);
-                        printf("\n");
-                }
+		if(len < 20){
+	                for(i=0; i<graph.n; i++){
+        	                printf("Graph %d:\n", i+1);
+                	        writeGraph(&graph, stdout, i);
+                	       	printf("\n");
+                	}
+		}
         }
     }
     if( in == NULL ) {
